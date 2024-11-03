@@ -1,0 +1,13 @@
+{
+  "name": "@quorini/qui-core",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.0",
+    "rollup": "^2.60.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "esnext",
+      "strict": true,
+      "declaration": true,
+      "jsx": "react",
+      "outDir": "./dist",
+      "baseUrl": ".",
+      "paths": {
+        "@quorini/qui-core": ["packages/quorini-core/src"],
+        "@quorini/qui-react": ["packages/quorini-react/src"],
+        "@quorini/qui-vue": ["packages/quorini-vue/src"]
+      }
+    },
+    "include": ["packages/*/src"]
+  }
+  
