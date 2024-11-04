@@ -10,7 +10,7 @@
       "vue": "^3.0.0"
     },
     "dependencies": {
-      "@quorini/qui-core": "workspace:*"
+      "@quorini/qui-core": "1.0.0"
     },
     "devDependencies": {
       "typescript": "^4.5.0",

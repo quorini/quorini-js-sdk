@@ -1,2 +1,25 @@
-# dependencies
-/node_modules
+# Ignore root node_modules (Yarn workspace will use a single node_modules at the root)
+node_modules/
+
+# Ignore node_modules in all subdirectories
+**/node_modules/
+
+# Ignore Yarn and npm cache files
+.yarn/
+.pnp.*
+.yarnrc.yml
+npm-debug.log*
+yarn-error.log
+
+# Ignore build outputs
+**/dist/
+
+# Ignore TypeScript build artifacts
+**/*.tsbuildinfo
+
+# Ignore IDE or OS-specific files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
