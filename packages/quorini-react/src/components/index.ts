@@ -1,1 +1,1 @@
-// Components Index
+export * from './Authenticator';

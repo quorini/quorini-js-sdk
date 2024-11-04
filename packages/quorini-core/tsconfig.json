@@ -1,8 +1,13 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-      "outDir": "./dist"
+      "outDir": "./dist",
+      "types": ["node"],
+      "paths": {
+        "*": ["node_modules/*", "src/types/*"]
+      }
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
   }
   

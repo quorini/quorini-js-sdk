@@ -7,12 +7,18 @@
       "jsx": "react",
       "outDir": "./dist",
       "baseUrl": ".",
+      "moduleResolution": "node",
+      "typeRoots": ["node_modules/@types"],
+      "types": [],
+      "allowSyntheticDefaultImports": true,
+      "lib": ["ESNext", "DOM"],
       "paths": {
         "@quorini/qui-core": ["packages/quorini-core/src"],
         "@quorini/qui-react": ["packages/quorini-react/src"],
         "@quorini/qui-vue": ["packages/quorini-vue/src"]
       }
     },
-    "include": ["packages/*/src"]
+    "include": ["packages/*/src", "env.d.ts"],
+    "exclude": ["node_modules", "dist"]
   }
   

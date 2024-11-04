@@ -1,1 +1,1 @@
-// src index
+export * from './components';
