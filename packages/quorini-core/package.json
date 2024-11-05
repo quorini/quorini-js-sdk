@@ -16,5 +16,6 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5"
-  }
+  },
+  "gitHead": "d7904527ac57035032d8374e7e877ac6a51bc47c"
 }
