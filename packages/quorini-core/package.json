@@ -1,5 +1,5 @@
 {
-  "name": "qui-core",
+  "name": "@quorini/qui-core",
   "version": "0.1.4-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
