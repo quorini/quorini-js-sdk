@@ -17,5 +17,14 @@
   "dependencies": {
     "dotenv": "^16.4.5"
   },
-  "gitHead": "d7904527ac57035032d8374e7e877ac6a51bc47c"
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quorini/quorini-js-sdk"
+  },
+  "author": "ernst1202",
+  "license": "MIT",
+  "gitHead": "cbfbf6442356e35925c757ff3a3291ec1cd64892"
 }
