@@ -1,6 +1,6 @@
 {
   "name": "@quorini/qui-react",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,7 +11,7 @@
     "react-dom": "^17.0.0"
   },
   "dependencies": {
-    "@quorini/qui-core": "^0.1.2",
+    "@quorini/qui-core": "^0.1.3-alpha.0",
     "axios": "^1.7.7",
     "react": "^18.3.1"
   },
