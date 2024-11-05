@@ -32,7 +32,7 @@ const Authenticator: React.FC<AuthenticatorProps> = ({
 
   const handleSignup = async () => {
     try {
-      const data = await signup(username, email, password);
+      const data = await signup(username, password);
       setMessage('Signup successful!');
       onSignupSuccess?.(data); // Call onSignupSuccess if provided
     } catch (error) {
