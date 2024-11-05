@@ -1,5 +1,5 @@
 {
-  "name": "@quorini/qui-core",
+  "name": "qui-core",
   "version": "0.1.3-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,5 +26,5 @@
   },
   "author": "ernst1202",
   "license": "MIT",
-  "gitHead": "1186660e13f7de4093303b14b10fdf6b9d87287c"
+  "gitHead": "c4a15aeb65d140a79792c1ebf9c88ed51e38aa8c"
 }
