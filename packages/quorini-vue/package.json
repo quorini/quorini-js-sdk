@@ -1,20 +1,19 @@
 {
-    "name": "@quorini/qui-vue",
-    "version": "1.0.0",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-      "build": "rollup -c"
-    },
-    "peerDependencies": {
-      "vue": "^3.0.0"
-    },
-    "dependencies": {
-      "@quorini/qui-core": "1.0.0"
-    },
-    "devDependencies": {
-      "typescript": "^4.5.0",
-      "rollup": "^2.60.0"
-    }
+  "name": "@quorini/qui-vue",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "dependencies": {
+    "@quorini/qui-core": "^0.1.0"
+  },
+  "devDependencies": {
+    "rollup": "^2.60.0",
+    "typescript": "^4.5.0"
   }
-  
+}
