@@ -1,5 +1,5 @@
 {
-  "name": "@quorini/qui-react",
+  "name": "@ernst1202/qui-react",
   "version": "0.1.4-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
-    "@quorini/qui-core": "^0.1.4-alpha.0",
+    "@ernst1202/qui-core": "^0.1.4-alpha.0",
     "react": "^18.3.1"
   },
   "devDependencies": {
