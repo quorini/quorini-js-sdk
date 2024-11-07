@@ -12,5 +12,5 @@ export default {
       tsconfig: './tsconfig.json'
     })
   ],
-  external: ['react', 'react-dom', '@quorini/qui-core']
+  external: ['react', 'react-dom', '@ernst1202/qui-core']
 };
