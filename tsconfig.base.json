@@ -4,6 +4,7 @@
       "module": "esnext",
       "strict": true,
       "declaration": true,
+      "declarationDir": "./dist",
       "jsx": "react",
       "outDir": "./dist",
       "baseUrl": ".",

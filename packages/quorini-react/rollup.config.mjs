@@ -4,7 +4,7 @@ export default {
   input: 'src/index.ts',
   output: {
     dir: 'dist',
-    format: 'es',
+    format: 'esm',
     sourcemap: true,
   },
   plugins: [

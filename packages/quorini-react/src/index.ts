@@ -1,1 +1,1 @@
-export { Authenticator, AuthenticatorProps } from './components';
+export * from './components/Authenticator';
