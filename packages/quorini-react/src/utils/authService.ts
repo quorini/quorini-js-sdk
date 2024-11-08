@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiUrl } from '@quorini/qui-core';
+import { apiUrl } from '@ernst1202/qui-core';
 
 export interface AuthResponse {
   token: string;

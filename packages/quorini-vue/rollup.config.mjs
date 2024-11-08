@@ -12,5 +12,5 @@ export default {
       tsconfig: './tsconfig.json'
     })
   ],
-  external: ['vue', '@quorini/qui-core']
+  external: ['vue', '@ernst1202/qui-core']
 };
