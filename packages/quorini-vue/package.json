@@ -1,6 +1,6 @@
 {
   "name": "@ernst1202/qui-vue",
-  "version": "0.1.4",
+  "version": "0.1.6-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
