@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { apiKey, apiUrl } from "@ernst1202/qui-core";
 
 // Define base URLs using environment variables
 // const QUORINI_API = process.env.REACT_APP_QUORINI_API;
@@ -26,7 +27,8 @@ const apiClient = axios.create({
 // Login function
 export const login = async (username: string, password: string) => {
   try {
-    console.log("login-QUORINI_AUTH_API", QUORINI_AUTH_API)
+    console.log("login-QUORINI_AUTH_API", QUORINI_AUTH_API);
+    console.log("apiUrl", apiUrl);
     const response = await apiClient.post(`${QUORINI_AUTH_API}/log-in`, {
       authOption: { username, password },
     });
