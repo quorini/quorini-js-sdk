@@ -13,8 +13,6 @@ const CUSTOMER_API = "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/dev
 const CUSTOMER_AUTH_API = "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development"
 
 if (!QUORINI_API || !QUORINI_AUTH_API || !CUSTOMER_API || !CUSTOMER_AUTH_API) {
-  const { authApiUrl } = QClient.getConfig();
-  console.log("getConfig-auth-api-url", authApiUrl);
   console.warn("Some API environment variables are not defined.");
 }
 
@@ -29,6 +27,8 @@ const apiClient = axios.create({
 // Login function
 export const login = async (username: string, password: string) => {
   try {
+    const { authApiUrl } = QClient.getConfig();
+    console.log("getConfig-auth-api-url", authApiUrl);
     console.log("login-QUORINI_AUTH_API", QUORINI_AUTH_API);
     const response = await apiClient.post(`${QUORINI_AUTH_API}/log-in`, {
       authOption: { username, password },
