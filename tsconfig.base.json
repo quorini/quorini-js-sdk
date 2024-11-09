@@ -20,7 +20,7 @@
         "@ernst1202/qui-vue": ["packages/quorini-vue/src"]
       }
     },
-    "include": ["packages/*/src", "env.d.ts"],
+    "include": ["packages/*/src"],
     "exclude": ["node_modules", "dist"]
   }
   

@@ -6,15 +6,13 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/dotenv": "^8.2.3",
     "@types/node": "^22.8.7",
     "lerna": "^8.1.9",
     "rollup": "^2.60.0",
     "typescript": "^4.5.0"
   },
   "scripts": {
-    "build": "yarn workspaces run build",
-    "postinstall": "cp .env packages/quorini-react/.env"
+    "build": "yarn workspaces run build"
   },
   "dependencies": {
     "dotenv": "^16.4.5"
