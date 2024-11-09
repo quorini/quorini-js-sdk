@@ -13,8 +13,5 @@
   },
   "scripts": {
     "build": "yarn workspaces run build"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
   }
 }
