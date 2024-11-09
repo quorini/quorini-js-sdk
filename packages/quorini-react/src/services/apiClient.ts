@@ -29,7 +29,9 @@ export const login = async (username: string, password: string) => {
   try {
     const { authApiUrl } = QClient.getConfig();
     console.log("getConfig-auth-api-url", authApiUrl);
+    
     // console.log("login-QUORINI_AUTH_API", QUORINI_AUTH_API);
+    
     const response = await apiClient.post(`${authApiUrl}/log-in`, {
       authOption: { username, password },
     });
