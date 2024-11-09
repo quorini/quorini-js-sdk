@@ -1,6 +1,6 @@
 {
   "name": "@ernst1202/qui-react",
-  "version": "0.1.8-alpha.0",
+  "version": "0.1.9-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,7 +11,7 @@
     "react-dom": ">=17.0.0"
   },
   "dependencies": {
-    "@ernst1202/qui-core": "^0.1.8-alpha.0",
+    "@ernst1202/qui-core": "^0.1.9-alpha.0",
     "axios": "^1.7.7",
     "react": "^18.3.1"
   },
