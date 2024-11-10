@@ -1,2 +1,2 @@
-export { default as Authenticator } from './Authenticator';
-export type { AuthenticatorProps } from './Authenticator.types';
+export { default as QAuth } from './QAuth';
+export type { QAuthProps } from './QAuth.types';
