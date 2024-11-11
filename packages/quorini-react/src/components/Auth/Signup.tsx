@@ -14,7 +14,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    signup(username, username, password)
+    signup(username, password)
       .then(() => {
         onSignupSuccess();
       })

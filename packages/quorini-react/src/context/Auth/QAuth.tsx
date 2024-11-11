@@ -48,7 +48,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   };
 
-  const signup = async (username: string, password: string, email?: string) => {
+  const signup = async (username: string, password: string) => {
     try {
       const userData = await AuthService.signup(username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
