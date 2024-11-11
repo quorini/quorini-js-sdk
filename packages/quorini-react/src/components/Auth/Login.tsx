@@ -91,7 +91,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
           <Button block type="primary" htmlType="submit" loading={isLoading}>
             Log in
           </Button>
-          or <a href="" onClick={onSignupClick}>Sign up now!</a>
+          or <a href="#" onClick={onSignupClick}>Sign up now!</a>
         </Form.Item>
       </Form>
     </LoginWrapper>
