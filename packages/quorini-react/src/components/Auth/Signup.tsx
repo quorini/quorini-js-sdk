@@ -40,7 +40,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
   return (
     <SignupWrapper>
       <Form onFinish={handleSignup} autoComplete="off">
-        <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]}>
+        <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
           <Input
             prefix={<UserOutlined />}
             placeholder="Email address..."
@@ -68,6 +68,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
               message: "Should be at least 8 characters.",
             },
           ]}
+          style={{ maxWidth: "300px" }}
         >
           <Input.Password
             prefix={<LockOutlined />}
@@ -75,7 +76,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
             title="Password..."
             onChange={(e) => setPassword(e.target.value)}
             size="large"
-            style={{ width: "300px" }}
           />
         </Form.Item>
 
@@ -96,6 +96,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
                 message: "Should be at least 8 characters.",
               },
             ]}
+            style={{ maxWidth: "300px" }}
           >
             <Input.Password
               prefix={<LockOutlined />}
@@ -103,7 +104,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
               title="Confirm Password..."
               onChange={(e) => setConfirmPassword(e.target.value)}
               size="large"
-              style={{ width: "300px" }}
             />
           </Form.Item>
         </Flex>

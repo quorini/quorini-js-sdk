@@ -33,14 +33,13 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
   return (
     <LoginWrapper>
       <Form onFinish={handleLogin} autoComplete="off">
-        <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]}>
+        <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
           <Input
             prefix={<UserOutlined />}
             placeholder="Email address..."
             title="Email address..."
             onChange={(e) => setUsername(e.target.value)}
             size="large"
-            style={{ width: "300px" }}
             autoFocus
           />
         </Form.Item>
@@ -57,6 +56,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
               message: "Should be at least 8 characters.",
             },
           ]}
+          style={{ maxWidth: "300px" }}
         >
           <Input.Password
             prefix={<LockOutlined />}
@@ -64,7 +64,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
             title="Password..."
             onChange={(e) => setPassword(e.target.value)}
             size="large"
-            style={{ width: "300px" }}
           />
         </Form.Item>
 
