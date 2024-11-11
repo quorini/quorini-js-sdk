@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks';
 import styled from 'styled-components';
-import { Alert, Button, Flex, Form, Input } from 'antd';
+import { Alert, Button, Form, Input } from 'antd';
 import { LockOutlined, UserOutlined } from "@ant-design/icons"
 
 interface SignupProps {
@@ -79,34 +79,32 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
           />
         </Form.Item>
 
-        <Flex wrap>
-          <Form.Item
-            name="confirmPassword"
-            rules={[
-              {
-                required: true,
-                message: "Please input your confirm password!",
-              },
-              {
-                pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
-                message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
-              },
-              {
-                min: 8,
-                message: "Should be at least 8 characters.",
-              },
-            ]}
-            style={{ maxWidth: "300px" }}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Confirm Password..."
-              title="Confirm Password..."
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              size="large"
-            />
-          </Form.Item>
-        </Flex>
+        <Form.Item
+          name="confirmPassword"
+          rules={[
+            {
+              required: true,
+              message: "Please input your confirm password!",
+            },
+            {
+              pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
+              message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
+            },
+            {
+              min: 8,
+              message: "Should be at least 8 characters.",
+            },
+          ]}
+          style={{ maxWidth: "300px" }}
+        >
+          <Input.Password
+            prefix={<LockOutlined />}
+            placeholder="Confirm Password..."
+            title="Confirm Password..."
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            size="large"
+          />
+        </Form.Item>
 
         {error && (
           <Form.Item>
