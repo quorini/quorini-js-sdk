@@ -42,8 +42,10 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
       setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
+      console.log("QAuth-login-success", sessionData);
     } catch (error) {
       setAuthStep('login');
+      console.error("QAuth Login Err", error);
       throw error;
     }
   };
