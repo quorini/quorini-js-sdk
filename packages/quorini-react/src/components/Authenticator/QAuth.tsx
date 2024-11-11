@@ -67,7 +67,7 @@ const QAuth: React.FC<QAuthProps> = ({
             handleLogin();
           }}
         >
-          <h2>Login</h2>
+          <h2>Login:</h2>
           <input
             name="username"
             placeholder="Username"
@@ -95,7 +95,7 @@ const QAuth: React.FC<QAuthProps> = ({
             handleSignup();
           }}
         >
-          <h2>Signup</h2>
+          <h2>Signup:</h2>
           <input
             name="username"
             placeholder="Username"
@@ -127,7 +127,7 @@ const QAuth: React.FC<QAuthProps> = ({
             handleVerification();
           }}
         >
-          <h2>Email Verification</h2>
+          <h2>Email Verification:</h2>
           <input
             name="verificationCode"
             placeholder="Verification Code"
