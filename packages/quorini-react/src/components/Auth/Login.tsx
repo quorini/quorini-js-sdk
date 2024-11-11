@@ -15,7 +15,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
   const handleLogin = () => {
     login(username, password)
       .then(() => {
-        onLoginSuccess();
+        // onLoginSuccess();
       })
       .catch((err) => {
         console.log("login-err", err);

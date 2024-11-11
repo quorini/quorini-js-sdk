@@ -16,7 +16,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
     e.preventDefault();
     signup(username, password)
       .then(() => {
-        onSignupSuccess();
+        // onSignupSuccess();
       })
       .catch((err) => {
         console.log("signup err", err);
