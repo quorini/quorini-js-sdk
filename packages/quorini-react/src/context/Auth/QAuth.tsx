@@ -26,16 +26,16 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   useEffect(() => {
     // Check if there is a token in localStorage to initialize user session
     if (session) {
-      setUser({ username: session.username, isActive: session.isActive, accessToken: session.accessToken });
+      console.log("useEffect-session", session);
+      setUser({ username: session?.username, isActive: session?.isActive, accessToken: session?.accessToken });
     }
   }, [session]);
 
   const login = async (username: string, password: string) => {
     try {
       const sessionData = await AuthService.login(username, password);
-      localStorage.setItem(SESSION_KEY, JSON.stringify({ ...sessionData, username }));
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
-      setUser({...sessionData});
     } catch (error) {
       console.error("Login Error:", error);
     }
