@@ -9,7 +9,7 @@ if (!apiUrl || !authApiUrl || !apiCustomerUrl || !authApiCustomerUrl) {
 
 // Create an Axios instance with default config
 const apiClient = axios.create({
-  baseURL: apiUrl, // Default base URL; can override per request if needed
+  baseURL: QClient.getConfig().apiUrl, // Default base URL; can override per request if needed
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,6 +18,7 @@ const apiClient = axios.create({
 // Login function
 export const login = async (username: string, password: string) => {
   try {
+    const { authApiUrl } = QClient.getConfig();
     console.log("authApiUrl", authApiUrl);
     const response = await apiClient.post(`${authApiUrl}/log-in`, {
       authOption: { username, password },
