@@ -28,7 +28,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
     if (session) {
       console.log("useEffect-session", session);
-      setUser({ username: session?.username, isActive: session?.isActive, accessToken: session?.accessToken });
+      // setUser({ username: session?.username, isActive: session?.isActive, accessToken: session?.accessToken });
     }
   }, []);
 
@@ -37,7 +37,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       const sessionData = await AuthService.login(username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
-      setUser({ username: sessionData?.username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
+      setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
     } catch (error) {
       console.error("Login Error:", error);
     }
@@ -48,7 +48,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       const userData = await AuthService.signup(username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
       setSession(userData);
-      setUser({ username: userData?.username, isActive: userData?.isActive, accessToken: userData?.accessToken });
+      setUser({ username, isActive: userData?.isActive, accessToken: userData?.accessToken });
       setAuthStep('verifyEmail');
     } catch (error) {
       setAuthStep('signup');
@@ -61,7 +61,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       const verifiedData = await AuthService.verifyEmail(verificationCode, username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify(verifiedData));
       setSession(verifiedData);
-      setUser({ username: verifiedData?.username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
+      setUser({ username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
       setAuthStep('success');
     } catch (error) {
       setAuthStep('verifyEmail');

@@ -17,6 +17,6 @@ export interface AuthContextType {
 
 export interface User {
   username: string;
-  isActive: boolean;
-  accessToken: any;
+  isActive?: boolean;
+  accessToken?: any;
 }
