@@ -53,10 +53,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
               message: "Please input your password!",
             },
             {
-              pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
-              message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
-            },
-            {
               min: 8,
               message: "Should be at least 8 characters.",
             },
