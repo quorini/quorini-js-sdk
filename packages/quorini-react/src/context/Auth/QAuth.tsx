@@ -42,20 +42,16 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
       setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
-      console.log("QAuth-login-success", sessionData);
     } catch (error) {
       setAuthStep('login');
-      console.error("QAuth Login Err", error);
       throw error;
     }
   };
 
   const signup = async (username: string, password: string) => {
     try {
-      const userData = await AuthService.signup(username, password);
-      localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
-      setSession(userData);
-      setUser({ username, isActive: userData?.isActive, accessToken: userData?.accessToken });
+      await AuthService.signup(username, password);
+      setUser({ username });
     } catch (error) {
       setAuthStep('signup');
       throw error;
@@ -64,11 +60,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
 
   const verifyEmail = async (verificationCode: string, username: string) => {
     try {
-      const verifiedData = await AuthService.verifyEmail(verificationCode, username);
-      localStorage.setItem(SESSION_KEY, JSON.stringify(verifiedData));
-      setSession(verifiedData);
-      setUser({ username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
-      console.log("QAuth-verifyEmail-success", verifiedData);
+      await AuthService.verifyEmail(verificationCode, username);
+      setUser({ username });
     } catch (error) {
       setAuthStep('verifyEmail');
       throw error;
@@ -82,7 +75,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const renderAuthComponent = () => {
-    if (user && user.isActive) return children;
+    if (user && user.accessToken) return children;
 
     switch (authStep) {
       case 'signup':
