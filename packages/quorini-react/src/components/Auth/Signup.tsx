@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../hooks';
 
-const Signup: React.FC<{ onSignupSuccess: () => void }> = ({ onSignupSuccess }) => {
+interface SignupProps {
+  onSignupSuccess: () => void;
+}
+
+const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
+  const { signup } = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSignupSuccess();
+    try {
+      await signup(username, username, password);
+      onSignupSuccess();
+    } catch (error) {
+      setError("sign up err. try again");
+    }
   };
 
   return (
@@ -17,6 +29,7 @@ const Signup: React.FC<{ onSignupSuccess: () => void }> = ({ onSignupSuccess }) 
       <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
       <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
       <button type="submit">Signup</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </form>
   );
 };

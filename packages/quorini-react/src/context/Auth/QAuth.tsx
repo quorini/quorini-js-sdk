@@ -19,7 +19,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   SignupComponent = Signup,
   VerifyEmailComponent = VerifyEmail,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>({} as User);
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
   const [session, setSession] = useState<any>(null);
 
@@ -60,9 +60,9 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   };
 
-  const verifyEmail = async (verificationCode: string, username: string, password: string) => {
+  const verifyEmail = async (verificationCode: string, username: string) => {
     try {
-      const verifiedData = await AuthService.verifyEmail(verificationCode, username, password);
+      const verifiedData = await AuthService.verifyEmail(verificationCode, username);
       localStorage.setItem(SESSION_KEY, JSON.stringify(verifiedData));
       setSession(verifiedData);
       setUser({ username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
@@ -74,7 +74,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const logout = () => {
-    setUser(null);
+    setUser({} as User);
     localStorage.removeItem(SESSION_KEY);
     setAuthStep('login');
   };
@@ -88,7 +88,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       case 'verifyEmail':
         return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('login')} />;
+        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} />;
     }
   };
 

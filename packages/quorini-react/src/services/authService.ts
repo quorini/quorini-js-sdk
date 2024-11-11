@@ -40,18 +40,19 @@ export const signup = async (username: string, password: string) => {
 };
 
 // Verify Email
-export const verifyEmail = async (code: string, username: string, password: string) => {
+export const verifyEmail = async (code: string, username: string) => {
   let result: any = null;
   try {
     const { authApiUrl } = QClient.getConfig();
     const response = await apiClient.get(`${authApiUrl}/verify-email?code=${code}&username=${username.replace("+", "%2B")}`);
     if (response.status === 200) {
-      try {
-        const verifiedData = await login(username, password);
-        result = verifiedData;
-      } catch (error) {
-        throw error;
-      }
+      // try {
+      //   const verifiedData = await login(username, password);
+      //   result = verifiedData;
+      // } catch (error) {
+      //   throw error;
+      // }
+      result = response.data;
     }
     return result;
   } catch (error) {

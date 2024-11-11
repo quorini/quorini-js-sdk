@@ -8,12 +8,12 @@ export interface AuthProviderProps {
 }
 
 export interface AuthContextType {
-  user: User | null;
+  user: User;
   session: any | null;
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
-  verifyEmail: (verificationCode: string, username: string, password: string) => Promise<void>;
+  verifyEmail: (verificationCode: string, username: string) => Promise<void>;
 }
 
 export interface User {

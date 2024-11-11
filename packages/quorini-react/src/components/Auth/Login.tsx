@@ -1,9 +1,13 @@
-// src/components/Auth/Login.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks';
 
-const Login = () => {
-  const { login } = useAuth(); // Auth hook provided by SDK
+interface LoginProps {
+  onLoginSuccess: () => void;
+  onSignupClick: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -11,9 +15,9 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       await login(username, password);
-      // The `login` function should handle redirecting to dashboard or next step
+      onLoginSuccess();
     } catch (err) {
-      setError("Invalid username or password"); // Display error message if login fails
+      setError("Invalid username or password");
     }
   };
 
@@ -33,6 +37,7 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleLogin}>Login</button>
+      <button onClick={onSignupClick}>Sign up</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
