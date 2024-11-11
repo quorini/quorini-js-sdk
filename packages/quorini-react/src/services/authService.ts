@@ -11,17 +11,17 @@ const apiClient = axios.create({
 
 // login function
 export const login = async (username: string, password: string) => {
+  let result:any = null;
   try {
     const { authApiUrl } = QClient.getConfig();
     const response = await apiClient.post(`${authApiUrl}/log-in`, {
       authOption: { username, password },
     });
     if (response.status === 200 && response.data.accessToken) {
-      localStorage.setItem("session", JSON.stringify({ ...response.data, username }))
+      result = response.data;
     }
-    return response.data;
+    return result;
   } catch (error) {
-    console.error("Login error:", error);
     throw error;
   }
 };
@@ -35,35 +35,26 @@ export const signup = async (username: string, password: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Signup error:", error);
     throw error;
   }
 };
 
 // Verify Email
 export const verifyEmail = async (code: string, username: string, password: string) => {
+  let result: any = null;
   try {
     const { authApiUrl } = QClient.getConfig();
     const response = await apiClient.get(`${authApiUrl}/verify-email?code=${code}&username=${username.replace("+", "%2B")}`);
     if (response.status === 200) {
       try {
         const verifiedData = await login(username, password);
-        return verifiedData;
+        result = verifiedData;
       } catch (error) {
-        localStorage.removeItem("session");
         throw error;
       }
-    } else {
-      localStorage.removeItem("session");
     }
+    return result;
   } catch (error) {
-    console.error("Verification error:", error);
-    localStorage.removeItem("session");
     throw error;
   }
-};
-
-// logout function
-export const logout = () => {
-  localStorage.removeItem("session");
 };
