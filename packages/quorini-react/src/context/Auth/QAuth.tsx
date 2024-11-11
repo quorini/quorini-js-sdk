@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { AuthContextType, AuthProviderProps, User } from './QAuth.types';
 import * as AuthService from '../../services/authService';
 import { Login, Signup, VerifyEmail } from '../../components/Auth';
@@ -27,8 +27,12 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     // Check if there is a token in localStorage to initialize user session
     const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
     if (session) {
-      console.log("useEffect-session", session);
-      setUser({ username: session?.username, isActive: session?.isActive, accessToken: session?.accessToken });
+      setSession(session);
+      setUser({
+        username: session.userData?.username || session.userData?.email,
+        isActive: session?.isActive,
+        accessToken: session?.accessToken,
+      });
     }
   }, []);
 
@@ -76,7 +80,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const renderAuthComponent = () => {
-    if (user) return children;
+    if (user && user.isActive) return children;
 
     switch (authStep) {
       case 'signup':
@@ -89,7 +93,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, verifyEmail }}>
+    <AuthContext.Provider value={{ user, session, login, signup, logout, verifyEmail }}>
       {renderAuthComponent()}
     </AuthContext.Provider>
   );

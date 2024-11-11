@@ -8,7 +8,8 @@ export interface AuthProviderProps {
 }
 
 export interface AuthContextType {
-  user: any | null;
+  user: User | null;
+  session: any | null;
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
