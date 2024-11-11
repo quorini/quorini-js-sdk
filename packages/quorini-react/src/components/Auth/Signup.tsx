@@ -12,14 +12,16 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await signup(username, username, password);
-      onSignupSuccess();
-    } catch (error) {
-      setError("sign up err. try again");
-    }
+    signup(username, username, password)
+      .then(() => {
+        onSignupSuccess();
+      })
+      .catch((err) => {
+        console.log("signup err", err);
+        setError("sign up err. try again");
+      });
   };
 
   return (

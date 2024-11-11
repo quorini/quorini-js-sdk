@@ -12,13 +12,15 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async () => {
-    try {
-      await login(username, password);
-      onLoginSuccess();
-    } catch (err) {
-      setError("Invalid username or password");
-    }
+  const handleLogin = () => {
+    login(username, password)
+      .then(() => {
+        onLoginSuccess();
+      })
+      .catch((err) => {
+        console.log("login-err", err);
+        setError("Invalid username or password");
+      });
   };
 
   return (

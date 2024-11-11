@@ -11,12 +11,14 @@ const VerifyEmail: React.FC<VerifyEmailProps> = ({ onVerifySuccess }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await verifyEmail(verificationCode, user.username);
-      onVerifySuccess();
-    } catch (error) {
-      setError("sign up err. try again");
-    }
+    verifyEmail(verificationCode, user.username)
+      .then(() => {
+        onVerifySuccess();
+      })
+      .catch((err) => {
+        console.log("verify email err", err);
+        setError("sign up err. try again");
+      });
   };
 
   return (
