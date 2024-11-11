@@ -42,11 +42,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
       setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
-      console.log("QAuth-login-success", sessionData);
-      // setAuthStep('success');
     } catch (error) {
       setAuthStep('login');
-      console.error("QAuth Login Error:", error);
       throw error;
     }
   };
@@ -57,11 +54,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
       setSession(userData);
       setUser({ username, isActive: userData?.isActive, accessToken: userData?.accessToken });
-      console.log("QAuth-signup-success", userData);
-      // setAuthStep('verifyEmail');
     } catch (error) {
       setAuthStep('signup');
-      console.error("QAuth Signup Error:", error);
       throw error;
     }
   };
@@ -73,10 +67,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       setSession(verifiedData);
       setUser({ username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
       console.log("QAuth-verifyEmail-success", verifiedData);
-      // setAuthStep('login');
     } catch (error) {
       setAuthStep('verifyEmail');
-      console.error("Verify Email Error:", error);
       throw error;
     }
   };
@@ -92,11 +84,11 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
 
     switch (authStep) {
       case 'signup':
-        return <SignupComponent onSignupSuccess={() => console.log("onSignupSuccess")} />;
+        return <SignupComponent onSignupSuccess={() => setAuthStep('verifyEmail')} />;
       case 'verifyEmail':
-        return <VerifyEmailComponent onVerifySuccess={() => console.log("onVerifySuccess")} />;
+        return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
-        return <LoginComponent onLoginSuccess={() => console.log("onLoginSuccess")} onSignupClick={() => setAuthStep('signup')} />;
+        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} />;
     }
   };
 
