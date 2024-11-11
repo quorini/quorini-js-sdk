@@ -28,7 +28,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
     if (session) {
       console.log("useEffect-session", session);
-      // setUser({ username: session?.username, isActive: session?.isActive, accessToken: session?.accessToken });
+      setUser({ username: session?.username, isActive: session?.isActive, accessToken: session?.accessToken });
     }
   }, []);
 
