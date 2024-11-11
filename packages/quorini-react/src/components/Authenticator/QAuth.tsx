@@ -6,7 +6,7 @@ type AuthStep = 'login' | 'signup' | 'verify' | 'success';
 
 const DefaultSuccessPage: React.FC<{ onLogout: () => void }> = ({ onLogout }) => (
   <div>
-    <h2>Welcome!</h2>
+    <h2>Welcome!!!</h2>
     <p>
       You have successfully logged in.<br/>
       To show your own page, need to add onLoginSuccess props in QAuth.
