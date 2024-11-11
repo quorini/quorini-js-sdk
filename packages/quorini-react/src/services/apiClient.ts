@@ -9,7 +9,7 @@ const apiClient = axios.create({
   },
 });
 
-// Login function
+// login function
 export const login = async (username: string, password: string) => {
   try {
     const { authApiUrl } = QClient.getConfig();
@@ -26,7 +26,7 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-// Signup function
+// signup function
 export const signup = async (username: string, password: string) => {
   try {
     const { authApiUrl } = QClient.getConfig();
@@ -61,4 +61,9 @@ export const verifyEmail = async (code: string, username: string, password: stri
     localStorage.removeItem("session");
     throw error;
   }
+};
+
+// logout function
+export const logout = () => {
+  localStorage.removeItem("session");
 };

@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { login, signup, verifyEmail } from '../../services/apiClient';
+import { login, signup, verifyEmail, logout } from '../../services/apiClient';
 import { QAuthProps } from './QAuth.types';
 
-type AuthStep = 'login' | 'signup' | 'verify';
+type AuthStep = 'login' | 'signup' | 'verify' | 'success';
+
+const DefaultSuccessPage: React.FC<{ onLogout: () => void }> = ({ onLogout }) => (
+  <div>
+    <h2>Welcome!</h2>
+    <p>You have successfully logged in.</p>
+    <button onClick={onLogout}>Log out</button>
+  </div>
+);
 
 const QAuth: React.FC<QAuthProps> = ({
   onLoginSuccess,
@@ -21,11 +29,15 @@ const QAuth: React.FC<QAuthProps> = ({
   useEffect(() => {
     const sessionData = localStorage.getItem("session");
     if (sessionData) {
-      onLoginSuccess?.(sessionData);
+      handleLoginSuccess(JSON.parse(sessionData));
     } else {
       setAuthStep('login');
     }
   }, [])
+
+  const handleLoginSuccess = (sessionData: any) => {
+    onLoginSuccess ? onLoginSuccess(sessionData) : setAuthStep('success');
+  };
 
   const handleLogin = async () => {
     try {
@@ -56,6 +68,11 @@ const QAuth: React.FC<QAuthProps> = ({
       onVerificationFailure?.(error);
       setAuthStep('signup');
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setAuthStep('login');
   };
 
   return (
@@ -137,6 +154,8 @@ const QAuth: React.FC<QAuthProps> = ({
           <button type="submit">Verify</button>
         </form>
       )}
+
+      {authStep === 'success' && <DefaultSuccessPage onLogout={handleLogout} />}
     </div>
   );
 };
