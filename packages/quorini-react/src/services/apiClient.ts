@@ -3,7 +3,7 @@ import { QClient } from "@ernst1202/qui-core";
 
 const { apiUrl, authApiUrl, apiCustomerUrl, authApiCustomerUrl } = QClient.getConfig();
 
-if (!authApiUrl || !authApiUrl || !apiCustomerUrl || !authApiCustomerUrl) {
+if (!apiUrl || !authApiUrl || !apiCustomerUrl || !authApiCustomerUrl) {
   console.warn("Some API environment variables are not defined.");
 }
 
@@ -18,6 +18,7 @@ const apiClient = axios.create({
 // Login function
 export const login = async (username: string, password: string) => {
   try {
+    console.log("authApiUrl", authApiUrl);
     const response = await apiClient.post(`${authApiUrl}/log-in`, {
       authOption: { username, password },
     });
