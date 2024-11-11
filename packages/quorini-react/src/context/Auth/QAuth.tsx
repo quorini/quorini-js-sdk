@@ -32,9 +32,10 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
 
   const login = async (username: string, password: string) => {
     try {
-      const sessionData = await AuthService.login(username, password)
+      const sessionData = await AuthService.login(username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify({ ...sessionData, username }));
       setSession(sessionData);
+      setUser({...sessionData});
     } catch (error) {
       console.error("Login Error:", error);
     }
