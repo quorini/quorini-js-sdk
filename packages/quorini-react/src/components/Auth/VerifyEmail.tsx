@@ -13,7 +13,7 @@ const VerifyEmail: React.FC<VerifyEmailProps> = ({ onVerifySuccess }) => {
     e.preventDefault();
     verifyEmail(verificationCode, user.username)
       .then(() => {
-        // onVerifySuccess();
+        onVerifySuccess();
       })
       .catch((err) => {
         console.log("verify email err", err);

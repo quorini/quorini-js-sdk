@@ -42,10 +42,12 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
       setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
-      console.log("QAuth-login", sessionData);
+      console.log("QAuth-login-success", sessionData);
+      // setAuthStep('success');
     } catch (error) {
       setAuthStep('login');
-      console.error("Login Error:", error);
+      console.error("QAuth Login Error:", error);
+      throw error;
     }
   };
 
@@ -55,10 +57,12 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
       setSession(userData);
       setUser({ username, isActive: userData?.isActive, accessToken: userData?.accessToken });
-      console.log("QAuth-signup", userData);
+      console.log("QAuth-signup-success", userData);
+      // setAuthStep('verifyEmail');
     } catch (error) {
       setAuthStep('signup');
-      console.error("Signup Error:", error);
+      console.error("QAuth Signup Error:", error);
+      throw error;
     }
   };
 
@@ -68,10 +72,12 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(verifiedData));
       setSession(verifiedData);
       setUser({ username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
-      console.log("QAuth-verifyEmail", verifiedData);
+      console.log("QAuth-verifyEmail-success", verifiedData);
+      // setAuthStep('login');
     } catch (error) {
       setAuthStep('verifyEmail');
       console.error("Verify Email Error:", error);
+      throw error;
     }
   };
 
@@ -86,11 +92,11 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
 
     switch (authStep) {
       case 'signup':
-        return <SignupComponent onSignupSuccess={() => setAuthStep('verifyEmail')} />;
+        return <SignupComponent onSignupSuccess={() => console.log("onSignupSuccess")} />;
       case 'verifyEmail':
-        return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
+        return <VerifyEmailComponent onVerifySuccess={() => console.log("onVerifySuccess")} />;
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} />;
+        return <LoginComponent onLoginSuccess={() => console.log("onLoginSuccess")} onSignupClick={() => setAuthStep('signup')} />;
     }
   };
 
