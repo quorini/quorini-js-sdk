@@ -17,8 +17,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignup = () => {
     setIsLoading(true);
     if (password !== confirmPassword) {
       setError("Password not matched!");
