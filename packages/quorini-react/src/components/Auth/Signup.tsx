@@ -37,7 +37,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
   };
 
   return (
-    <SignupWrapper>
+    <FormWrapper>
       <Form onFinish={handleSignup} autoComplete="off">
         <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
           <Input
@@ -118,11 +118,11 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
           or <a href="#" onClick={onLoginClick}>Log in</a>
         </Form.Item>
       </Form>
-    </SignupWrapper>
+    </FormWrapper>
   );
 };
 
-const SignupWrapper = styled.div`
+const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
   height: 100vh;
