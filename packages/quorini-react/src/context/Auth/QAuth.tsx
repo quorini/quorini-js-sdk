@@ -43,6 +43,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       setSession(sessionData);
       setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
     } catch (error) {
+      setAuthStep('login');
       console.error("Login Error:", error);
     }
   };
@@ -53,7 +54,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
       setSession(userData);
       setUser({ username, isActive: userData?.isActive, accessToken: userData?.accessToken });
-      setAuthStep('verifyEmail');
     } catch (error) {
       setAuthStep('signup');
       console.error("Signup Error:", error);
@@ -66,7 +66,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       localStorage.setItem(SESSION_KEY, JSON.stringify(verifiedData));
       setSession(verifiedData);
       setUser({ username, isActive: verifiedData?.isActive, accessToken: verifiedData?.accessToken });
-      setAuthStep('success');
     } catch (error) {
       setAuthStep('verifyEmail');
       console.error("Verify Email Error:", error);
