@@ -7,19 +7,20 @@ interface Config {
 const QClient = (() => {
     let config: Config = {};
     let mode: 'dev' | 'prod' = 'dev'; // Default mode is `dev`
+    
+    // here we work only with customer url
+
+    // it should be same style as frontend, you can check in PR
+    // ${process.env.REACT_APP_CUSTOMER_AUTH_API}/${ctx.projectId}/log-in${ctx.gqlSimulator.env !== "production" ? `?env=${ctx.gqlSimulator.env}` : ""}
 
     const privateUrls = {
         dev: {
-            apiUrl: "https://nq3o4t9ax0.execute-api.us-west-2.amazonaws.com/development",
-            authApiUrl: "https://vlpw2q6zt5.execute-api.us-west-2.amazonaws.com/development",
-            apiCustomerUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/development",
-            authApiCustomerUrl: "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development",
+            apiUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/",
+            authApiUrl: "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development",
         },
         prod: {
-            apiUrl: "https://api.quorini.app",
-            authApiUrl: "https://auth.quorini.app",
-            apiCustomerUrl: "https://api.quorini.io",
-            authApiCustomerUrl: "https://auth.quorini.io",
+            apiUrl: "https://api.quorini.io" + {config.projectId} ,
+            authApiUrl: "https://auth.quorini.io"  + {config.projectId},
         }
     };
 
