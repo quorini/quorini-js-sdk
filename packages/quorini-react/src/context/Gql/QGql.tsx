@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
 import { QClient } from '@ernst1202/qui-core';
 import { QGqlContextType, OperationVariables, OperationWithParams } from './QGql.types';
 import { useAuth } from '../../hooks';
-import path from 'path';
+import path from 'path-browserify';
 
 // Fallback paths for queries and mutations
 const DEFAULT_QUERIES_PATH = './src/generated/queries';
@@ -17,16 +17,6 @@ const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations || DEFAULT_MUTA
 
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
-
-// const client = new ApolloClient({
-//   link: new HttpLink({
-//     uri: `${baseUri}/${projectId}/gql${env !== 'production' ? `?env=${env}` : ''}`,
-//     headers: {
-//       Authorization: `${useAuth().user.accessToken}`,
-//     },
-//   }),
-//   cache: new InMemoryCache(),
-// });
 
 // Provider component to wrap your app
 export const QGqlProvider = ({ children }: { children: ReactNode }) => {
@@ -56,17 +46,19 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
   };
 
-  const loadOperation = <VarsType extends OperationVariables, ResponseType>(
+  const loadOperation = async <VarsType extends OperationVariables, ResponseType>(
     type: 'queries' | 'mutations',
     operationName: string
-  ): OperationWithParams<VarsType, ResponseType> => {
+  ): Promise<OperationWithParams<VarsType, ResponseType>> => {
+    const pathToFile = resolvePath(type); // Get the resolved path
+  
     try {
-      const operations = require(resolvePath(type));
+      const operations = await import(pathToFile); // Dynamically import the module
       const operation = operations[operationName];
       if (!operation) {
         throw new Error(`Operation "${operationName}" not found in ${type}.`);
       }
-      return operation as OperationWithParams<VarsType, ResponseType>;;
+      return operation as OperationWithParams<VarsType, ResponseType>;
     } catch (error: any) {
       throw new Error(`Failed to load ${type}: ${error.message}`);
     }
@@ -77,7 +69,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
-    const operation = loadOperation<VarsType, ResponseType>('queries', operationName);
+    const operation = await loadOperation<VarsType, ResponseType>('queries', operationName);
 
     const query = gql(
       selectors
@@ -97,7 +89,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     operationName: string,
     variables: VarsType
   ): Promise<ResponseType> => {
-    const operation = loadOperation<VarsType, ResponseType>('mutations', operationName);
+    const operation = await loadOperation<VarsType, ResponseType>('mutations', operationName);
 
     const mutation = gql(operation);
 
@@ -129,4 +121,4 @@ const QGql = {
   Provider: QGqlProvider,
 };
 
-export { QGql, QGqlContext }
+export { QGql, QGqlContext };
