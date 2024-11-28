@@ -84,11 +84,8 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook to access the QGqlContext
-export const useQGql = (): QGqlContextType => {
-  const context = useContext(QGqlContext);
-  if (!context) {
-    throw new Error('useQGql must be used within a QGqlProvider');
-  }
-  return context;
+const QGql = {
+  Provider: QGqlProvider,
 };
+
+export { QGql, QGqlContext }
