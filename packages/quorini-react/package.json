@@ -1,6 +1,6 @@
 {
   "name": "@ernst1202/qui-react",
-  "version": "0.1.48",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
-    "@ernst1202/qui-core": "^0.1.48",
+    "@ernst1202/qui-core": "^0.2.0",
     "antd": "^5.21.6",
     "axios": "^1.7.7",
     "graphql": "^16.9.0",
