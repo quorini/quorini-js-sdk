@@ -1,7 +1,11 @@
 // This will allow the React project to configure the values based on their environment variables
 interface Config {
-    projectId: string;
-    env?: 'production' | 'development';
+    projectId: string,
+    env?: 'production' | 'development',
+    gqlPaths?: {
+        queries: string,
+        mutations: string,
+    },
 }
   
 const QClient = (() => {
