@@ -14,10 +14,12 @@ export interface AuthContextType {
   signup: (username: string, password: string) => Promise<void>;
   logout: () => void;
   verifyEmail: (verificationCode: string, username: string) => Promise<void>;
+  refreshAuthToken: () => Promise<void>;
 }
 
 export interface User {
   username: string;
   isActive?: boolean;
   accessToken?: any;
+  refreshToken?: any;
 }

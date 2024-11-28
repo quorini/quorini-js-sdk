@@ -32,6 +32,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
         username: session.userData?.username || session.userData?.email,
         isActive: session?.isActive,
         accessToken: session?.accessToken,
+        refreshToken: session?.refreshToken,
       });
     }
   }, []);
@@ -41,7 +42,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       const sessionData = await AuthService.login(username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
-      setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
+      setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken, refreshToken: session?.refreshToken });
     } catch (error) {
       setAuthStep('login');
       throw error;
@@ -68,6 +69,17 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   };
 
+  const refreshAuthToken = async () => {
+    try {
+      const updatedSession = await AuthService.refreshAuthToken(user.refreshToken);
+      console.log("refreshAuthToken-updatedSession", updatedSession);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(updatedSession));
+      setUser({ ...user, accessToken: updatedSession.accessToken });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   const logout = () => {
     setUser({} as User);
     localStorage.removeItem(SESSION_KEY);
@@ -88,7 +100,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, login, signup, logout, verifyEmail }}>
+    <AuthContext.Provider value={{ user, session, login, signup, logout, verifyEmail, refreshAuthToken }}>
       {renderAuthComponent()}
     </AuthContext.Provider>
   );
@@ -99,4 +111,4 @@ const QAuth = {
   Provider: QAuthProvider,
 };
 
-export { QAuth, AuthContext };
+export { QAuth, AuthContext, SESSION_KEY };
