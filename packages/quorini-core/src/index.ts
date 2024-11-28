@@ -1,7 +1,7 @@
 // This will allow the React project to configure the values based on their environment variables
 interface Config {
     projectId: string,
-    env?: 'production' | 'development',
+    env?: 'production' | string,
     gqlPaths?: {
         queries: string,
         mutations: string,
