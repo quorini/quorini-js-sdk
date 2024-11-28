@@ -43,7 +43,8 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const resolvePath = (type: 'queries' | 'mutations') => {
-    return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
+    // return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
+    return type === 'queries' ? gqlQueriesPath : gqlMutationsPath;
   };
 
   const loadOperation = async <VarsType extends OperationVariables, ResponseType>(
