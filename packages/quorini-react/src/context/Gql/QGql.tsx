@@ -36,7 +36,9 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     operationName: string
   ): Promise<string> => {
     const gqlPaths = QClient.getConfig().gqlPaths;
+    console.log("gqlPaths", JSON.stringify(gqlPaths));
     const operations = type === 'queries' ? gqlPaths?.queries : gqlPaths?.mutations;
+    console.log()
   
     if (!operations || !operations[operationName]) {
       throw new Error(`Operation "${operationName}" not found in ${type}.`);
