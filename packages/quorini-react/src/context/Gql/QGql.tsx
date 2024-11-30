@@ -4,10 +4,6 @@ import { QClient } from '@ernst1202/qui-core';
 import { QGqlContextType, OperationVariables, OperationWithParams } from './QGql.types';
 import { useAuth } from '../../hooks';
 
-// Fallback paths for queries and mutations
-const DEFAULT_QUERIES_PATH = './src/generated/queries';
-const DEFAULT_MUTATIONS_PATH = './src/generated/mutations';
-
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
 
@@ -35,34 +31,19 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     return <div>Loading...</div>; // Render loading state until client is set up
   }
 
-  const resolvePath = (type: 'queries' | 'mutations') => {
-    // return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
-    const gqlQueriesPath = QClient.getConfig().gqlPaths?.queries || DEFAULT_QUERIES_PATH;
-    const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations || DEFAULT_MUTATIONS_PATH;
-    console.log("gqlQueriesPath", gqlQueriesPath);
-    console.log("gqlMutationsPath", gqlMutationsPath);
-    return type === 'queries' ? gqlQueriesPath : gqlMutationsPath;
-  };
-
   const loadOperation = async <VarsType extends OperationVariables, ResponseType>(
     type: 'queries' | 'mutations',
     operationName: string
   ): Promise<OperationWithParams<VarsType, ResponseType>> => {
-    const pathToFile = resolvePath(type); // Get the resolved path
+    const gqlPaths = QClient.getConfig().gqlPaths;
+    const operations = type === 'queries' ? gqlPaths?.queries : gqlPaths?.mutations;
   
-    try {
-      console.log("pathToFile", pathToFile);
-      const operations = await import(pathToFile!); // Dynamically import the module
-      const operation = operations[operationName];
-      console.log("operationName", operationName);
-      console.log("operation", operation);
-      if (!operation) {
-        throw new Error(`Operation "${operationName}" not found in ${type}.`);
-      }
-      return operation as OperationWithParams<VarsType, ResponseType>;
-    } catch (error: any) {
-      throw new Error(`Failed to load ${type}: ${error.message}`);
+    if (!operations || !operations[operationName]) {
+      throw new Error(`Operation "${operationName}" not found in ${type}.`);
     }
+  
+    const operation = operations[operationName];
+    return operation as OperationWithParams<VarsType, ResponseType>;
   };
 
   const query = async <VarsType extends OperationVariables, ResponseType>(
