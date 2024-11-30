@@ -1,6 +1,6 @@
 {
   "name": "@ernst1202/qui-react",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
