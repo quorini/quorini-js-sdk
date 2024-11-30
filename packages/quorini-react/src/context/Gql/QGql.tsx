@@ -11,8 +11,8 @@ const DEFAULT_MUTATIONS_PATH = './src/generated/mutations';
 const baseUri = QClient.getPrivate('apiUrl');
 const projectId = QClient.getConfig().projectId;
 const env = QClient.getConfig().env;
-const gqlQueriesPath = QClient.getConfig().gqlPaths?.queries || DEFAULT_QUERIES_PATH;
-const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations || DEFAULT_MUTATIONS_PATH;
+const gqlQueriesPath = QClient.getConfig().gqlPaths?.queries;
+const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations;
 
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
@@ -54,7 +54,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   
     try {
       console.log("pathToFile", pathToFile);
-      const operations = await import(pathToFile); // Dynamically import the module
+      const operations = await import(`${pathToFile}`); // Dynamically import the module
       const operation = operations[operationName];
       console.log("operationName", operationName);
       console.log("operation", operation);
