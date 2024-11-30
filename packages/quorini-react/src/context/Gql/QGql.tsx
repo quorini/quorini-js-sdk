@@ -51,9 +51,9 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     operationName: string
   ): Promise<OperationWithParams<VarsType, ResponseType>> => {
     const pathToFile = resolvePath(type); // Get the resolved path
+  
     try {
-      console.log("pathToFile", pathToFile);
-      const operations = await import(`${pathToFile}`); // Dynamically import the module
+      const operations = await import(pathToFile); // Dynamically import the module
       const operation = operations[operationName];
       if (!operation) {
         throw new Error(`Operation "${operationName}" not found in ${type}.`);

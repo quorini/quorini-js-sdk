@@ -871,6 +871,11 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.4.tgz#56e2cc26c397c038fab0e3a917a12d5c5909e901"
   integrity sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==
 
+"@types/path-browserify@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/path-browserify/-/path-browserify-1.0.3.tgz#25de712d4def94b3901f033c30d3d3bd16eba8d3"
+  integrity sha512-ZmHivEbNCBtAfcrFeBCiTjdIc2dey0l7oCGNGpSuRTy8jP6UVND7oUowlvDujBy8r2Hoa8bfFUOCiPWfmtkfxw==
+
 "@types/prop-types@*":
   version "15.7.13"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.13.tgz#2af91918ee12d9d32914feb13f5326658461b451"
@@ -3483,6 +3488,11 @@ parse-url@^8.1.0:
   integrity sha512-xDvOoLU5XRrcOZvnI6b8zA6n9O9ejNk/GExuz1yBuWUGn9KA97GI6HTs6u02wKara1CeVmZhH+0TZFdWScR89w==
   dependencies:
     parse-path "^7.0.0"
+
+path-browserify@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/path-browserify/-/path-browserify-1.0.1.tgz#d98454a9c3753d5790860f16f68867b9e46be1fd"
+  integrity sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==
 
 path-exists@^3.0.0:
   version "3.0.0"
