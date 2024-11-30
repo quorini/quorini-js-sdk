@@ -3,6 +3,7 @@ import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
 import { QClient } from '@ernst1202/qui-core';
 import { QGqlContextType, OperationVariables, OperationWithParams } from './QGql.types';
 import { useAuth } from '../../hooks';
+import path from 'path-browserify';
 
 // Fallback paths for queries and mutations
 const DEFAULT_QUERIES_PATH = './src/generated/queries';
@@ -11,6 +12,8 @@ const DEFAULT_MUTATIONS_PATH = './src/generated/mutations';
 const baseUri = QClient.getPrivate('apiUrl');
 const projectId = QClient.getConfig().projectId;
 const env = QClient.getConfig().env;
+const gqlQueriesPath = QClient.getConfig().gqlPaths?.queries || DEFAULT_QUERIES_PATH;
+const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations || DEFAULT_MUTATIONS_PATH;
 
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
@@ -36,33 +39,29 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.accessToken]);
 
   if (!client) {
-    return <div>Loading....</div>; // Render loading state until client is set up
+    return <div>Loading...</div>; // Render loading state until client is set up
   }
 
-  const resolvePath = (type: "queries" | "mutations") => {
-    return type === "queries"
-      ? QClient.getConfig().gqlPaths?.queries || DEFAULT_QUERIES_PATH
-      : QClient.getConfig().gqlPaths?.mutations || DEFAULT_MUTATIONS_PATH;
+  const resolvePath = (type: 'queries' | 'mutations') => {
+    // return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
+    return type === 'queries' ? gqlQueriesPath : gqlMutationsPath;
   };
 
   const loadOperation = async <VarsType extends OperationVariables, ResponseType>(
-    type: "queries" | "mutations",
+    type: 'queries' | 'mutations',
     operationName: string
   ): Promise<OperationWithParams<VarsType, ResponseType>> => {
-    const pathToFile = resolvePath(type); // Resolve the file path from config
+    const pathToFile = resolvePath(type); // Get the resolved path
   
     try {
-      const operations = await import(`${pathToFile}`); // Dynamically import the file
-      if (!operations) {
-        throw new Error(`File not found at path: ${pathToFile}`);
-      }
+      const operations = await import(pathToFile); // Dynamically import the module
       const operation = operations[operationName];
       if (!operation) {
-        throw new Error(`Operation "${operationName}" not found in ${type} at path: ${pathToFile}`);
+        throw new Error(`Operation "${operationName}" not found in ${type}.`);
       }
       return operation as OperationWithParams<VarsType, ResponseType>;
     } catch (error: any) {
-      throw new Error(`Failed to load ${type} from path "${pathToFile}": ${error.message}`);
+      throw new Error(`Failed to load ${type}: ${error.message}`);
     }
   };
 
