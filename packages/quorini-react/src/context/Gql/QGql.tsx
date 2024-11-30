@@ -56,15 +56,18 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<ResponseType> => {
     const operation = await loadOperation<VarsType, ResponseType>('queries', operationName);
 
-    const query = gql(
+    const gqlQuery = gql(
       selectors
         ? operation.replace(/{[^}]*}/, `{ ${selectors} }`)
         : operation
     );
 
+    // Ensure variables are never undefined
+    const safeVariables = variables ?? ({} as VarsType);
+
     const response = await client.query<ResponseType, VarsType>({
-      query,
-      variables,
+      query: gqlQuery,
+      variables: safeVariables,
     });
 
     return response.data;
