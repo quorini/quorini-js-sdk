@@ -3,7 +3,6 @@ import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
 import { QClient } from '@ernst1202/qui-core';
 import { QGqlContextType, OperationVariables, OperationWithParams } from './QGql.types';
 import { useAuth } from '../../hooks';
-import path from 'path-browserify';
 
 // Fallback paths for queries and mutations
 const DEFAULT_QUERIES_PATH = './src/generated/queries';
