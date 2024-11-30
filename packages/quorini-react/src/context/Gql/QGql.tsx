@@ -8,12 +8,6 @@ import { useAuth } from '../../hooks';
 const DEFAULT_QUERIES_PATH = './src/generated/queries';
 const DEFAULT_MUTATIONS_PATH = './src/generated/mutations';
 
-const baseUri = QClient.getPrivate('apiUrl');
-const projectId = QClient.getConfig().projectId;
-const env = QClient.getConfig().env;
-const gqlQueriesPath = QClient.getConfig().gqlPaths?.queries;
-const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations;
-
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
 
@@ -26,7 +20,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     if (user?.accessToken) {
       const client = new ApolloClient({
         link: new HttpLink({
-          uri: `${baseUri}/${projectId}/gql${env !== 'production' ? `?env=${env}` : ''}`,
+          uri: `${QClient.getPrivate('apiUrl')}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env !== 'production' ? `?env=${QClient.getConfig().env}` : ''}`,
           headers: {
             Authorization: `${user.accessToken}`,
           },
@@ -43,9 +37,10 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
 
   const resolvePath = (type: 'queries' | 'mutations') => {
     // return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
+    const gqlQueriesPath = QClient.getConfig().gqlPaths?.queries || DEFAULT_QUERIES_PATH;
+    const gqlMutationsPath = QClient.getConfig().gqlPaths?.mutations || DEFAULT_MUTATIONS_PATH;
     console.log("gqlQueriesPath", gqlQueriesPath);
     console.log("gqlMutationsPath", gqlMutationsPath);
-    console.log("QClient.getConfig().gqlPaths?.queries", QClient.getConfig().gqlPaths?.queries);
     return type === 'queries' ? gqlQueriesPath : gqlMutationsPath;
   };
 
