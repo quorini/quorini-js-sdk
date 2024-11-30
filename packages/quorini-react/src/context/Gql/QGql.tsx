@@ -34,7 +34,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   const loadOperation = async <VarsType extends OperationVariables, ResponseType>(
     type: 'queries' | 'mutations',
     operationName: string
-  ): Promise<OperationWithParams<VarsType, ResponseType>> => {
+  ): Promise<string> => {
     const gqlPaths = QClient.getConfig().gqlPaths;
     const operations = type === 'queries' ? gqlPaths?.queries : gqlPaths?.mutations;
   
@@ -43,7 +43,8 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     }
   
     const operation = operations[operationName];
-    return operation as OperationWithParams<VarsType, ResponseType>;
+    // return operation as OperationWithParams<VarsType, ResponseType>;
+    return operation;
   };
 
   const query = async <VarsType extends OperationVariables, ResponseType>(
