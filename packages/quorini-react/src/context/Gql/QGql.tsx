@@ -38,7 +38,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.accessToken]);
 
   if (!client) {
-    return <div>Loading...</div>; // Render loading state until client is set up
+    return <div>Loading....</div>; // Render loading state until client is set up
   }
 
   const resolvePath = (type: 'queries' | 'mutations') => {
