@@ -38,7 +38,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.accessToken]);
 
   if (!client) {
-    return <div>Loading....</div>; // Render loading state until client is set up
+    return <div>Loading...</div>; // Render loading state until client is set up
   }
 
   const resolvePath = (type: 'queries' | 'mutations') => {
@@ -49,21 +49,20 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   const loadOperation = async <VarsType extends OperationVariables, ResponseType>(
     type: 'queries' | 'mutations',
     operationName: string
-  ): Promise<OperationWithParams<VarsType, ResponseType>> => {  
-    const pathToFile = resolvePath(type); // Resolve the file path from config
-  
+  ): Promise<OperationWithParams<VarsType, ResponseType>> => {
+    const pathToFile = resolvePath(type); // Get the resolved path
+    console.log("pathToFile", pathToFile);
     try {
-      const operations = await import(`${pathToFile}`); // Dynamically import the file
-      if (!operations) {
-        throw new Error(`File not found at path: ${pathToFile}`);
-      }
+      const operations = await import(`${pathToFile}`); // Dynamically import the module
+      console.log("operations", operations);
       const operation = operations[operationName];
+      console.log("operation", operation);
       if (!operation) {
-        throw new Error(`Operation "${operationName}" not found in ${type} at path: ${pathToFile}`);
+        throw new Error(`Operation "${operationName}" not found in ${type}.`);
       }
       return operation as OperationWithParams<VarsType, ResponseType>;
     } catch (error: any) {
-      throw new Error(`Failed to load ${type} from path "${pathToFile}": ${error.message}`);
+      throw new Error(`Failed to load ${type}: ${error.message}`);
     }
   };
 
