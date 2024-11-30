@@ -45,6 +45,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     // return path.resolve(type === 'queries' ? gqlQueriesPath : gqlMutationsPath);
     console.log("gqlQueriesPath", gqlQueriesPath);
     console.log("gqlMutationsPath", gqlMutationsPath);
+    console.log("QClient.getConfig().gqlPaths?.queries", QClient.getConfig().gqlPaths?.queries);
     return type === 'queries' ? gqlQueriesPath : gqlMutationsPath;
   };
 
