@@ -54,7 +54,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   
     try {
       console.log("pathToFile", pathToFile);
-      const operations = await import(`${pathToFile}`); // Dynamically import the module
+      const operations = await import(pathToFile!); // Dynamically import the module
       const operation = operations[operationName];
       console.log("operationName", operationName);
       console.log("operation", operation);
