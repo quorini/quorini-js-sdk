@@ -53,7 +53,8 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
-    const operation = await loadOperation('queries', operationName);
+    // const operation = await loadOperation('queries', operationName);
+    const operation = operationName;
 
     const gqlQuery = gql(
       selectors
@@ -68,6 +69,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
       const response = await client.query<ResponseType, VarsType>({
         query: gqlQuery,
         variables: safeVariables,
+        fetchPolicy: "no-cache",
       });
       return response.data;
     } catch (error) {
