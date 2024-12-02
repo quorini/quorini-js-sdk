@@ -1,8 +1,10 @@
-export interface OperationVariables {
-  [key: string]: any;
-}
+import { OperationVariables } from "@apollo/client";
 
-export type OperationWithParams<VarsType, ResponseType> = string;
+// export interface ResponseType {
+//   [key: string]: any;
+// }
+
+// export type OperationWithParams<VarsType, ResponseType> = string;
 
 export interface QGqlContextType {
   query<VarsType extends OperationVariables, ResponseType>(

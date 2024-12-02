@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
 import { QClient } from '@ernst1202/qui-core';
-import { QGqlContextType, OperationVariables } from './QGql.types';
+import { QGqlContextType } from './QGql.types';
 import { useAuth } from '../../hooks';
 
 // Create a context for GraphQL operations
