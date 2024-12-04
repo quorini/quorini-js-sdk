@@ -49,12 +49,11 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const query = async <VarsType extends OperationVariables, ResponseType>(
-    operationName: string,
+    queryStr: string,
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
-    // const operation = await loadOperation('queries', operationName);
-    const operation = operationName;
+    const operation = queryStr;
 
     const gqlQuery = gql(
       selectors
@@ -66,7 +65,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     const safeVariables = variables ?? ({} as VarsType);
 
     try {
-      const response = await client.query<ResponseType, VarsType>({
+      const response = await client.query<ResponseType, OperationVariables>({
         query: gqlQuery,
         variables: safeVariables,
         fetchPolicy: "no-cache",
