@@ -1,8 +1,8 @@
 import { OperationVariables } from "@apollo/client";
 
-// export interface ResponseType {
-//   [key: string]: any;
-// }
+export interface ResponseType {
+  [key: string]: any;
+}
 
 // export type OperationWithParams<VarsType, ResponseType> = string;
 
