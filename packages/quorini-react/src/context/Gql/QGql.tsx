@@ -78,10 +78,10 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const mutate = async <VarsType extends OperationVariables, ResponseType>(
-    operationName: string,
+    mutationStr: string,
     variables: VarsType
   ): Promise<ResponseType> => {
-    const operation = await loadOperation('mutations', operationName);
+    const operation = mutationStr;
 
     const mutation = gql(operation);
 
@@ -92,12 +92,12 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (!response.data) {
-        throw new Error(`Mutation response data for "${operationName}" is null or undefined.`);
+        throw new Error(`Mutation response data for "${mutationStr}" is null or undefined.`);
       }
 
       return response.data;
     } catch (error) {
-      console.error(`Error during mutation "${operationName}":`, error);
+      console.error(`Error during mutation "${mutationStr}":`, error);
       throw error;
     }
   };
