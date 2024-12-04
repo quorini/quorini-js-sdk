@@ -65,7 +65,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     const safeVariables = variables ?? ({} as VarsType);
 
     try {
-      const response = await client.query<ResponseType, OperationVariables>({
+      const response = await client.query<ResponseType, VarsType>({
         query: gqlQuery,
         variables: safeVariables,
         fetchPolicy: "no-cache",
