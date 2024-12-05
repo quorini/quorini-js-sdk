@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables, DefaultOptions } from '@apollo/client';
 import { QClient } from '@ernst1202/qui-core';
 import { QGqlContextType } from './QGql.types';
 import { useAuth } from '../../hooks';
@@ -22,11 +22,6 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
           },
         }),
         cache: new InMemoryCache(),
-        // defaultOptions: {
-        //   mutate: {
-        //     addTypename: false, // Disable __typename for mutations
-        //   },
-        // },
         connectToDevTools: true,
       });
       setClient(client);
@@ -95,14 +90,25 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
 
     console.log("mutation", mutation);
 
-    const strippedMutation = JSON.stringify(mutation, (key, value) => {
-      return key === "__typename" ? undefined : value;
-    });
+    const removeTypename = (value: any): any => {
+      if (Array.isArray(value)) {
+        return value.map(removeTypename);
+      } else if (value && typeof value === 'object') {
+        const newObject: any = {};
+        for (const key in value) {
+          if (key !== '__typename') {
+            newObject[key] = removeTypename(value[key]);
+          }
+        }
+        return newObject;
+      }
+      return value;
+    };
 
     try {
       const response = await client.mutate<ResponseType, VarsType>({
-        mutation: gql(strippedMutation),
-        variables,
+        mutation,
+        variables: removeTypename(variables),
         fetchPolicy: "no-cache",
       });
 
