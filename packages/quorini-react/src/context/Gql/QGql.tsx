@@ -83,36 +83,13 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     variables: VarsType
   ): Promise<ResponseType> => {
     const operation = mutationStr;
-
-    console.log("mutation operation string", operation);
-
     const mutation = gql(operation);
-
-    console.log("mutation", mutation);
-
-    const removeTypename = (value: any): any => {
-      if (Array.isArray(value)) {
-        return value.map(removeTypename);
-      } else if (value && typeof value === 'object') {
-        const newObject: any = {};
-        for (const key in value) {
-          if (key !== '__typename') {
-            newObject[key] = removeTypename(value[key]);
-          }
-        }
-        return newObject;
-      }
-      return value;
-    };
 
     try {
       const response = await client.mutate<ResponseType, VarsType>({
-        mutation: removeTypename(mutation),
+        mutation,
         variables,
-        fetchPolicy: "no-cache",
       });
-
-      console.log("mutation response", response);
 
       if (!response.data) {
         throw new Error(`Mutation response data for "${mutationStr}" is null or undefined.`);
