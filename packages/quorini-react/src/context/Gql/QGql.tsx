@@ -107,8 +107,8 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       const response = await client.mutate<ResponseType, VarsType>({
-        mutation,
-        variables: removeTypename(variables),
+        mutation: removeTypename(mutation),
+        variables,
         fetchPolicy: "no-cache",
       });
 
