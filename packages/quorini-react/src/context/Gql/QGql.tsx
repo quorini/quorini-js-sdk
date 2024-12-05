@@ -22,6 +22,11 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
           },
         }),
         cache: new InMemoryCache(),
+        // defaultOptions: {
+        //   mutate: {
+        //     addTypename: false, // Disable __typename for mutations
+        //   },
+        // },
         connectToDevTools: true,
       });
       setClient(client);
@@ -90,10 +95,15 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
 
     console.log("mutation", mutation)
 
+    const strippedMutation = JSON.stringify(mutation, (key, value) => {
+      return key === "__typename" ? undefined : value;
+    });
+
     try {
       const response = await client.mutate<ResponseType, VarsType>({
-        mutation,
+        mutation: gql(strippedMutation),
         variables,
+        fetchPolicy: "no-cache",
       });
 
       console.log("mutation response", response)
