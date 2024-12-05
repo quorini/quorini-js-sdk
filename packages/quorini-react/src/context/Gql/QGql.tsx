@@ -89,11 +89,11 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<ResponseType> => {
     const operation = mutationStr;
 
-    console.log("mutation operation string", operation)
+    console.log("mutation operation string", operation);
 
     const mutation = gql(operation);
 
-    console.log("mutation", mutation)
+    console.log("mutation", mutation);
 
     const strippedMutation = JSON.stringify(mutation, (key, value) => {
       return key === "__typename" ? undefined : value;
@@ -106,7 +106,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
         fetchPolicy: "no-cache",
       });
 
-      console.log("mutation response", response)
+      console.log("mutation response", response);
 
       if (!response.data) {
         throw new Error(`Mutation response data for "${mutationStr}" is null or undefined.`);
