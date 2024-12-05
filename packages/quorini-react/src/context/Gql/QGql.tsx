@@ -22,6 +22,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
           },
         }),
         cache: new InMemoryCache(),
+        connectToDevTools: true,
       });
       setClient(client);
     }
@@ -83,13 +84,19 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<ResponseType> => {
     const operation = mutationStr;
 
+    console.log("mutation operation string", operation)
+
     const mutation = gql(operation);
+
+    console.log("mutation", mutation)
 
     try {
       const response = await client.mutate<ResponseType, VarsType>({
         mutation,
         variables,
       });
+
+      console.log("mutation response", response)
 
       if (!response.data) {
         throw new Error(`Mutation response data for "${mutationStr}" is null or undefined.`);
