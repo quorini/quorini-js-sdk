@@ -7,6 +7,13 @@ import { useAuth } from '../../hooks';
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
 
+// Extend the DefaultOptions type to include addTypename
+const defaultOptions = {
+  mutate: {
+    addTypename: false // Disable __typename globally for mutations
+  }
+} as any;
+
 // Provider component to wrap your app
 export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth(); // Access the user object from useAuth hook
@@ -23,6 +30,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
         }),
         cache: new InMemoryCache(),
         connectToDevTools: true,
+        // defaultOptions,
       });
       setClient(client);
     }
