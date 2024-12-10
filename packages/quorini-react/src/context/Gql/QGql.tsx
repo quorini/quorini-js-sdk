@@ -29,7 +29,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
           },
         }),
         cache: new InMemoryCache({
-          addTypename: false, // Disable typename globally
+          addTypename: false,
         }),
         connectToDevTools: true,
         defaultOptions,
