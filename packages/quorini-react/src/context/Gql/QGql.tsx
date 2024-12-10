@@ -89,15 +89,9 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   const mutate = async <VarsType extends OperationVariables, ResponseType>(
     mutationStr: string,
     variables: VarsType,
-    selectors?: string
   ): Promise<ResponseType> => {
     const operation = mutationStr;
-    // const mutation = gql(operation);
-    const mutation = gql(
-      selectors
-        ? operation.replace(/{[^}]*}/, `{ id ${selectors} }`)
-        : operation.replace(/{[^}]*}/, `{ id }`)
-    );
+    const mutation = gql(operation);
 
     try {
       const response = await client.mutate<ResponseType, VarsType>({
