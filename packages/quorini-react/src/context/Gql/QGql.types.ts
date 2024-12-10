@@ -15,6 +15,5 @@ export interface QGqlContextType {
   mutate<VarsType extends OperationVariables, ResponseType>(
     operationName: string,
     variables: VarsType,
-    selectors?: string
   ): Promise<ResponseType>;
 }
