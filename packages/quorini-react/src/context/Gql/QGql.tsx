@@ -28,7 +28,9 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
             Authorization: `${user.accessToken}`,
           },
         }),
-        cache: new InMemoryCache(),
+        cache: new InMemoryCache({
+          addTypename: false, // Disable typename globally
+        }),
         connectToDevTools: true,
         defaultOptions,
       });
