@@ -30,7 +30,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
         }),
         cache: new InMemoryCache(),
         connectToDevTools: true,
-        // defaultOptions,
+        defaultOptions,
       });
       setClient(client);
     }
