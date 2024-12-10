@@ -74,7 +74,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       const updatedSession = await AuthService.refreshAuthToken(user.refreshToken);
       console.log("refreshAuthToken-updatedSession", updatedSession);
       localStorage.setItem(SESSION_KEY, JSON.stringify(updatedSession));
-      setUser({ ...user, accessToken: updatedSession.accessToken });
+      setUser({ ...user, accessToken: updatedSession.accessToken, refreshToken: updatedSession.refreshToken });
     } catch (error) {
       throw error;
     }
@@ -100,7 +100,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, login, signup, logout, verifyEmail, refreshAuthToken }}>
+    <AuthContext.Provider value={{ user, session, login, signup, logout, verifyEmail }}>
       {renderAuthComponent()}
     </AuthContext.Provider>
   );
