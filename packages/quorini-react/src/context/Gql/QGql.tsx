@@ -39,15 +39,16 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
+    // Dynamically replace the selection set in the query
+    const gqlQueryString = selectors
+    ? baseQuery.replace(
+        /{[^}]*}/, // Match the first selection set
+        `{ ${selectors} }` // Replace it with the desired fields
+      )
+    : baseQuery;
 
-    // Dynamically replace the fields within the query
-    const gqlQuery = gql`
-      query ${baseQuery} {
-        ${baseQuery} {
-          ${selectors ?? ""}
-        }
-      }
-    `;
+    // Parse the updated query string
+    const gqlQuery = gql(gqlQueryString);
 
     // Ensure variables are never undefined
     const safeVariables = variables ?? ({} as VarsType);
