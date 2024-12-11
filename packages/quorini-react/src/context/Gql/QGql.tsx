@@ -35,27 +35,18 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const query = async <VarsType extends OperationVariables, ResponseType>(
-    queryStr: string,
+    baseQuery: string,
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
-    // const operation = queryStr;
 
-    // Build a dynamic fragment if selectors are provided
-    const dynamicFragment = selectors
-    ? `fragment SelectedFields on QueryRootType { ${selectors} }`
-    : '';
-
-    // const gqlQuery = gql(
-    //   selectors
-    //     ? operation.replace(/{[^}]*}/, `{ ${selectors} }`)
-    //     : operation
-    // );
-
-    // Combine the query and the fragment
+    // Dynamically replace the fields within the query
     const gqlQuery = gql`
-      ${queryStr}
-      ${dynamicFragment}
+      query ${baseQuery} {
+        ${baseQuery} {
+          ${selectors ?? ""}
+        }
+      }
     `;
 
     // Ensure variables are never undefined
@@ -75,11 +66,10 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const mutate = async <VarsType extends OperationVariables, ResponseType>(
-    mutationStr: string,
+    baseMutation: string,
     variables: VarsType,
   ): Promise<ResponseType> => {
-    const operation = mutationStr;
-    const mutation = gql(operation);
+    const mutation = gql(baseMutation);
 
     try {
       const response = await client.mutate<ResponseType, VarsType>({
@@ -88,12 +78,12 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (!response.data) {
-        throw new Error(`Mutation response data for "${mutationStr}" is null or undefined.`);
+        throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
       }
 
       return response.data;
     } catch (error) {
-      console.error(`Error during mutation "${mutationStr}":`, error);
+      console.error(`Error during mutation "${baseMutation}":`, error);
       throw error;
     }
   };
