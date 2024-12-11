@@ -4,8 +4,6 @@ export interface ResponseType {
   [key: string]: any;
 }
 
-// export type OperationWithParams<VarsType, ResponseType> = string;
-
 export interface QGqlContextType {
   query<VarsType extends OperationVariables, ResponseType>(
     operationName: string,

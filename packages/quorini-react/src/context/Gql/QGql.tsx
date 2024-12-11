@@ -1,18 +1,11 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables, DefaultOptions } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
 import { QClient } from '@ernst1202/qui-core';
 import { QGqlContextType } from './QGql.types';
 import { useAuth } from '../../hooks';
 
 // Create a context for GraphQL operations
 const QGqlContext = createContext<QGqlContextType | undefined>(undefined);
-
-// Extend the DefaultOptions type to include addTypename
-const defaultOptions = {
-  mutate: {
-    addTypename: false // Disable __typename globally for mutations
-  }
-} as any;
 
 // Provider component to wrap your app
 export const QGqlProvider = ({ children }: { children: ReactNode }) => {
@@ -32,7 +25,6 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
           addTypename: false,
         }),
         connectToDevTools: true,
-        defaultOptions,
       });
       setClient(client);
     }
@@ -41,23 +33,6 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
   if (!client) {
     return <div>Loading...</div>; // Render loading state until client is set up
   }
-
-  const loadOperation = async (
-    type: 'queries' | 'mutations',
-    operationName: string
-  ): Promise<string> => {
-    const gqlPaths = QClient.getConfig().gqlPaths;
-    console.log("gqlPaths", JSON.stringify(gqlPaths));
-    const operations = type === 'queries' ? gqlPaths?.queries : gqlPaths?.mutations;
-    console.log("operations", operations);
-  
-    if (!operations || !operations[operationName]) {
-      throw new Error(`Operation "${operationName}" not found in ${type}.`);
-    }
-  
-    const operation = operations[operationName];
-    return operation;
-  };
 
   const query = async <VarsType extends OperationVariables, ResponseType>(
     queryStr: string,
