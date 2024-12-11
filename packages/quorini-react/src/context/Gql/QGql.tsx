@@ -24,7 +24,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
         cache: new InMemoryCache({
           addTypename: false,
         }),
-        connectToDevTools: true,
+        // connectToDevTools: true,
       });
       setClient(client);
     }
@@ -39,13 +39,24 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
-    const operation = queryStr;
+    // const operation = queryStr;
 
-    const gqlQuery = gql(
-      selectors
-        ? operation.replace(/{[^}]*}/, `{ ${selectors} }`)
-        : operation
-    );
+    // Build a dynamic fragment if selectors are provided
+    const dynamicFragment = selectors
+    ? `fragment SelectedFields on QueryRootType { ${selectors} }`
+    : '';
+
+    // const gqlQuery = gql(
+    //   selectors
+    //     ? operation.replace(/{[^}]*}/, `{ ${selectors} }`)
+    //     : operation
+    // );
+
+    // Combine the query and the fragment
+    const gqlQuery = gql`
+      ${queryStr}
+      ${dynamicFragment}
+    `;
 
     // Ensure variables are never undefined
     const safeVariables = variables ?? ({} as VarsType);

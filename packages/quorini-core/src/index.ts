@@ -2,10 +2,6 @@
 interface Config {
     projectId: string,
     env?: 'production' | string,
-    gqlPaths?: {
-        queries: Record<string, string>,
-        mutations: Record<string, string>,
-    },
 }
   
 const QClient = (() => {
