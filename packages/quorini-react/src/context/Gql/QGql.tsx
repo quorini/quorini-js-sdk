@@ -39,6 +39,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     variables?: VarsType,
     selectors?: string
   ): Promise<ResponseType> => {
+
     // Dynamically replace the selection set in the query
     const gqlQueryString = selectors
     ? baseQuery.replace(
