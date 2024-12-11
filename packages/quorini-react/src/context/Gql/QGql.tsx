@@ -40,13 +40,18 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     selectors?: string
   ): Promise<ResponseType> => {
 
-    // Dynamically replace the selection set in the query
+    // Ensure selectors are valid
+    if (selectors && !/^[a-zA-Z0-9_ ]+$/.test(selectors)) {
+      throw new Error("Invalid selectors format.");
+    }
+
+    // Replace the selection set with selectors if provided
     const gqlQueryString = selectors
-    ? baseQuery.replace(
-        /{[^}]*}/, // Match the first selection set
-        `{ ${selectors} }` // Replace it with the desired fields
-      )
-    : baseQuery;
+      ? baseQuery.replace(
+          /{([^{}]*)}/, // Match the inner selection set content
+          `{ ${selectors.trim()} }` // Safely inject the selectors
+        )
+      : baseQuery;
 
     // Parse the updated query string
     const gqlQuery = gql(gqlQueryString);
