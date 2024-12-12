@@ -6,7 +6,14 @@
   "scripts": {
     "build": "rollup -c"
   },
+  "dependencies": {
+    "@apollo/client": "^3.11.10",
+    "graphql": "^16.9.0"
+  },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
+    "@types/graphql": "^14.5.0",
+    "rollup-plugin-dts": "^6.1.1",
     "rollup": "^2.60.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { AuthContextType, AuthProviderProps, User } from './QAuth.types';
-import * as AuthService from '../../services/authService';
+import * as AuthService from '@ernst1202/qui-core';
 import { Login, Signup, VerifyEmail } from '../../components/Auth';
 
 const SESSION_KEY = 'session';

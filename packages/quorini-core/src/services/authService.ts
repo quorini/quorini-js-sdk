@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { QClient } from "@ernst1202/qui-core";
+import { QClient } from '../config';
 
 // Create an Axios instance with default config
 const apiClient = axios.create({
