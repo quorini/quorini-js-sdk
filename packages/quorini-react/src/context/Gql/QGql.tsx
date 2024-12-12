@@ -16,7 +16,7 @@ export const QGqlProvider = ({ children }: { children: ReactNode }) => {
     if (user?.accessToken) {
       const client = new ApolloClient({
         link: new HttpLink({
-          uri: `${QClient.getPrivate('apiUrl')}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env !== 'production' ? `?env=${QClient.getConfig().env}` : ''}`,
+          uri: `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env !== 'production' ? `?env=${QClient.getConfig().env}` : ''}`,
           headers: {
             Authorization: `${user.accessToken}`,
           },
