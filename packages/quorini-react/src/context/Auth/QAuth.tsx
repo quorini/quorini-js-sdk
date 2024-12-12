@@ -1,9 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { AuthContextType, AuthProviderProps, User } from './QAuth.types';
+import { SESSION_KEY } from '@ernst1202/qui-core';
 import * as AuthService from '@ernst1202/qui-core';
 import { Login, Signup, VerifyEmail } from '../../components/Auth';
-
-const SESSION_KEY = 'session';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -30,7 +29,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       setSession(session);
       setUser({
         username: session.userData?.username || session.userData?.email,
-        isActive: session?.isActive,
         accessToken: session?.accessToken,
         refreshToken: session?.refreshToken,
       });
@@ -40,10 +38,10 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const login = async (username: string, password: string) => {
     try {
       const sessionData = await AuthService.login(username, password);
-      console.log("login-sessionData", sessionData);
+
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
-      setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken, refreshToken: session?.refreshToken });
+      setUser({ username, accessToken: sessionData?.accessToken, refreshToken: session?.refreshToken });
     } catch (error) {
       setAuthStep('login');
       throw error;
@@ -112,4 +110,4 @@ const QAuth = {
   Provider: QAuthProvider,
 };
 
-export { QAuth, AuthContext, SESSION_KEY };
+export { QAuth, AuthContext };
