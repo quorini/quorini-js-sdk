@@ -49,7 +49,7 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
       variables: safeVariables,
       fetchPolicy: "no-cache",
     });
-    return response.data;
+    return response.data as ResponseType;
   } catch (error) {
     console.error('Apollo Query Error:', error);
     throw error;
@@ -72,7 +72,7 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
-    return response.data;
+    return response.data as ResponseType;
   } catch (error) {
     console.error(`Error during mutation "${baseMutation}":`, error);
     throw error;
