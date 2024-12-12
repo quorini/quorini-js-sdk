@@ -1,6 +1,6 @@
 {
   "name": "@ernst1202/qui-vue",
-  "version": "0.2.57",
+  "version": "0.2.58",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
-    "@ernst1202/qui-core": "^0.2.57"
+    "@ernst1202/qui-core": "^0.2.58"
   },
   "devDependencies": {
     "rollup": "^2.60.0",
