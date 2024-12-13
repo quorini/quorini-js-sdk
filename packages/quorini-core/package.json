@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
+    "bson": "^6.10.1",
     "graphql": "^16.9.0"
   },
   "devDependencies": {

@@ -13,8 +13,5 @@
   },
   "scripts": {
     "build": "yarn workspaces run build"
-  },
-  "dependencies": {
-    "bson": "^6.10.1"
   }
 }
