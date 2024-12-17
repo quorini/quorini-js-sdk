@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { QClient } from '../config';
 
+const ignoreFields = ["_id", "createdAt", "updatedAt", "createdBy", "email", "invitedBy", "status"];
+
 // Create an Axios instance with default config
 const apiClient = axios.create({
   baseURL: QClient.getPrivate().authApiUrl, // Default base URL; can override per request if needed
@@ -30,6 +32,8 @@ export const login = async (username: string, password: string) => {
 
 // signup function
 export const signup = async (username: string, password: string) => {
+  console.log("type", QClient.getConfig().signupInputType);
+
   // try {
   //   const authApiUrl = QClient.getPrivate('authApiUrl');
   //   const response = await apiClient.post(`${authApiUrl}/sign-up`, {

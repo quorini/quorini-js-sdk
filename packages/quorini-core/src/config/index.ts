@@ -1,15 +1,12 @@
 // This will allow the React project to configure the values based on their environment variables
-interface Config {
+interface Config<T> {
     projectId: string,
     env?: 'production' | 'development',
-    graphql?: {
-        queries: Record<string, string>,
-        mutations: Record<string, string>, 
-    }
+    signupInputType: T,
 }
   
 const QClient = (() => {
-    let config = {} as Config;
+    let config = {} as Config<any>;
 
     const privateDevUrls = {
         apiUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/development",
@@ -23,7 +20,7 @@ const QClient = (() => {
 
     return {
         // Public configuration method for React projects to pass their environment variables
-        configure(externalConfig: Config) {
+        configure(externalConfig: Config<any>) {
             config = { ...externalConfig };
         },
     

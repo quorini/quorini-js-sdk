@@ -38,7 +38,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const login = async (username: string, password: string) => {
     try {
       const sessionData = await AuthService.login(username, password);
-
+      console.log("sessionData", sessionData);
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
       setUser({ username, accessToken: sessionData?.accessToken, refreshToken: session?.refreshToken });
@@ -82,6 +82,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const logout = () => {
     setUser({} as User);
     localStorage.removeItem(SESSION_KEY);
+    localStorage.clear();
     setAuthStep('login');
   };
 
