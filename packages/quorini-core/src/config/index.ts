@@ -6,7 +6,7 @@ interface Config {
     //     queries: Record<string, string>,
     //     mutations: Record<string, string>, 
     // }
-    signupMutation: Record<string, string>,
+    signupMutation: string,
 }
   
 const QClient = (() => {
