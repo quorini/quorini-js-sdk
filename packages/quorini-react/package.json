@@ -1,6 +1,6 @@
 {
   "name": "@quorini/qui-react",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
-    "@quorini/qui-core": "^1.0.4",
+    "@quorini/qui-core": "^1.0.5",
     "antd": "^5.21.6",
     "axios": "^1.7.7",
     "graphql": "^16.9.0",
