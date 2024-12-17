@@ -32,65 +32,65 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-// signup function
-export const signup = async (username: string, password: string) => {
+const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
 
-  const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
+// Setup Apollo Client (assuming a GraphQL endpoint)
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`,
+    headers: {
+      Authorization: `${session?.accessToken}`,
+    },
+  }),
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
+});
 
-  // Setup Apollo Client (assuming a GraphQL endpoint)
-  const client = new ApolloClient({
-    link: new HttpLink({
-      uri: `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`,
-      headers: {
-        Authorization: `${session?.accessToken}`,
-      },
-    }),
-    cache: new InMemoryCache({
-      addTypename: false,
-    }),
-  });
+// Function to introspect the mutation fields and extract input types
+function getMutationInputType(mutationQuery: any) {
+  // You need to extract the query details, such as input types, from the mutation
+  const inputType = mutationQuery?.variables?.input?.type || null;
+  return inputType;
+}
 
-  // Function to introspect the mutation fields and extract input types
-  function getMutationInputType(mutationQuery: any) {
-    // You need to extract the query details, such as input types, from the mutation
-    const inputType = mutationQuery?.variables?.input?.type || null;
-    return inputType;
-  }
-
-  // Function to get fields for the extracted input type
-  function getInputTypeFields(inputType: string) {
-    // You can query the schema for the fields inside the input type (e.g., 'createCustomerInput')
-    const GET_INPUT_TYPE_FIELDS = gql`
-      query {
-        __type(name: "${inputType}") {
-          fields {
+// Function to get fields for the extracted input type
+function getInputTypeFields(inputType: string) {
+  // You can query the schema for the fields inside the input type (e.g., 'createCustomerInput')
+  const GET_INPUT_TYPE_FIELDS = gql`
+    query {
+      __type(name: "${inputType}") {
+        fields {
+          name
+          type {
             name
-            type {
-              name
-              kind
-            }
+            kind
           }
         }
       }
-    `;
-    
-    return client.query({ query: GET_INPUT_TYPE_FIELDS })
-      .then(result => result.data.__type.fields);
-  }
-
-  // Inside your SDK, once you have the mutation query
-  function introspectMutation(mutationQuery: any) {
-    // Introspect the mutation query to extract the input type name (e.g., createCustomerInput)
-    const inputType = getMutationInputType(mutationQuery);
-    if (inputType) {
-      getInputTypeFields(inputType).then(fields => {
-        console.log(fields);  // Fields will contain the data for the input type (e.g., firstName, lastName)
-      });
     }
-  }
+  `;
+  
+  return client.query({ query: GET_INPUT_TYPE_FIELDS })
+    .then(result => result.data.__type.fields);
+}
 
+// Inside your SDK, once you have the mutation query
+function introspectMutation(mutationQuery: any) {
+  // Introspect the mutation query to extract the input type name (e.g., createCustomerInput)
+  const inputType = getMutationInputType(mutationQuery);
+  if (inputType) {
+    getInputTypeFields(inputType).then(fields => {
+      console.log(fields);  // Fields will contain the data for the input type (e.g., firstName, lastName)
+    });
+  }
+}
+
+// signup function
+export const signup = async (username: string, password: string) => {
   // Example usage of the introspection
   const mutationQuery = QClient.getConfig().signupMutation;  // Get the mutation query from config
+  console.log("mutationQuery", mutationQuery)
   introspectMutation(mutationQuery);
 
   // try {
