@@ -1,6 +1,6 @@
 {
   "name": "@quorini/qui-vue",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
-    "@quorini/qui-core": "^1.0.10"
+    "@quorini/qui-core": "^1.0.11"
   },
   "devDependencies": {
     "rollup": "^2.60.0",
