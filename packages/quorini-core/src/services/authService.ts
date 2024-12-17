@@ -33,6 +33,7 @@ export const login = async (username: string, password: string) => {
 // signup function
 export const signup = async (username: string, password: string) => {
   const { createAdminInput }: any = QClient.getConfig().graphql?.mutations;
+  console.log("mutations", QClient.getConfig().graphql?.mutations);
   console.log("createAdminInput", createAdminInput);
 
   // try {
