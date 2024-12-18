@@ -89,7 +89,7 @@ function introspectMutation(mutationQuery: any) {
 // signup function
 export const signup = async (username: string, password: string) => {
   // Example usage of the introspection
-  const mm = QClient.getConfig().signupInputType;
+  const mm = QClient.getConfig().signupMetaData;
   console.log("mm", mm)
   introspectMutation(mm);
 
