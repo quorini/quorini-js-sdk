@@ -1,10 +1,11 @@
-import { Metadata } from "../utils";
-
 // This will allow the React project to configure the values based on their environment variables
 interface Config {
     projectId: string,
     env?: 'production' | 'development',
-    signupMetaData: Metadata,
+    gqlPaths?: {
+        queries: Record<string, string>,
+        mutations: Record<string, string>,
+    }
 }
   
 const QClient = (() => {
