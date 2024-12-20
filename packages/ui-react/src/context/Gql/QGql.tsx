@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
-import * as GqlService from '@quorini/qui-core';
+import * as GqlService from '@quorini/core';
 import { QGqlContextType } from './QGql.types';
 
 // Create a context for GraphQL operations

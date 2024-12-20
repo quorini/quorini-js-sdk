@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { AuthContextType, AuthProviderProps, User } from './QAuth.types';
-import { SESSION_KEY } from '@quorini/qui-core';
-import * as AuthService from '@quorini/qui-core';
+import { SESSION_KEY } from '@quorini/core';
+import * as AuthService from '@quorini/core';
 import { Login, Signup, VerifyEmail } from '../../components/Auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
