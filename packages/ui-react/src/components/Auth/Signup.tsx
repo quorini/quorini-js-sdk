@@ -18,6 +18,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [form] = Form.useForm();
 
   const defaultSignupForm = () => (
     <>
