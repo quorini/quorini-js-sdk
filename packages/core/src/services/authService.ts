@@ -47,51 +47,10 @@ const client = new ApolloClient({
   }),
 });
 
-// Function to introspect the mutation fields and extract input types
-function getMutationInputType(mutationQuery: any) {
-  // You need to extract the query details, such as input types, from the mutation
-  const inputType = mutationQuery?.variables?.input?.type || null;
-  return inputType;
-}
-
-// Function to get fields for the extracted input type
-function getInputTypeFields(inputType: string) {
-  // You can query the schema for the fields inside the input type (e.g., 'createCustomerInput')
-  const GET_INPUT_TYPE_FIELDS = gql`
-    query {
-      __type(name: "${inputType}") {
-        fields {
-          name
-          type {
-            name
-            kind
-          }
-        }
-      }
-    }
-  `;
-  
-  return client.query({ query: GET_INPUT_TYPE_FIELDS })
-    .then(result => result.data.__type.fields);
-}
-
-// Inside your SDK, once you have the mutation query
-function introspectMutation(mutationQuery: any) {
-  // Introspect the mutation query to extract the input type name (e.g., createCustomerInput)
-  const inputType = getMutationInputType(mutationQuery);
-  if (inputType) {
-    getInputTypeFields(inputType).then(fields => {
-      console.log(fields);  // Fields will contain the data for the input type (e.g., firstName, lastName)
-    });
-  }
-}
-
 // signup function
-export const signup = async (username: string, password: string) => {
+export const signup = async (username: string, password: string, code: string, signupFormData: any) => {
   // Example usage of the introspection
-  const mm = QClient.getConfig().signupMetaData;
-  console.log("mm", mm)
-  introspectMutation(mm);
+  
 
   // try {
   //   const authApiUrl = QClient.getPrivate('authApiUrl');

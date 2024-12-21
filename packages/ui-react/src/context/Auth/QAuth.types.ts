@@ -11,7 +11,7 @@ export interface AuthContextType {
   user: User;
   session: any | null;
   login: (username: string, password: string) => Promise<void>;
-  signup: (username: string, password: string) => Promise<void>;
+  signup: (username: string, password: string, code: string, formData: any) => Promise<void>;
   logout: () => void;
   verifyEmail: (verificationCode: string, username: string) => Promise<void>;
 }

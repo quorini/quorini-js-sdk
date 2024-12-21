@@ -3,13 +3,15 @@ import { useAuth } from '../../hooks';
 import styled from 'styled-components';
 import { Alert, Button, Form, Input } from 'antd';
 import { LockOutlined, UserOutlined } from "@ant-design/icons"
+import { MetaData } from '../../utils';
 
 interface SignupProps {
   onSignupSuccess: () => void;
   onLoginClick: () => void;
+  formFields?: MetaData[];
 }
 
-const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
+const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFields }) => {
   const { signup } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -17,27 +19,8 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSignup = () => {
-    setIsLoading(true);
-    if (password !== confirmPassword) {
-      setError("Password not matched!");
-      setIsLoading(false);
-      return;
-    }
-    signup(username, password)
-      .then(() => {
-        setIsLoading(false);
-        onSignupSuccess();
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        console.log("signup err", err);
-        setError("sign up err. try again");
-      });
-  };
-
-  return (
-    <FormWrapper>
+  const defaultSignupForm = () => (
+    <>
       <Form onFinish={handleSignup} autoComplete="off">
         <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
           <Input
@@ -117,6 +100,52 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
           </Button>
           or <a href="#" onClick={onLoginClick}>Log in</a>
         </Form.Item>
+      </Form>
+    </>
+  )
+
+  const handleSignup = (values: Record<string, any>) => {
+    setIsLoading(true);
+    console.log('Submitted Values:', values);
+    // if (password !== confirmPassword) {
+    //   setError("Password not matched!");
+    //   setIsLoading(false);
+    //   return;
+    // }
+    // signup(username, password)
+    //   .then(() => {
+    //     setIsLoading(false);
+    //     onSignupSuccess();
+    //   })
+    //   .catch((err) => {
+    //     setIsLoading(false);
+    //     console.log("signup err", err);
+    //     setError("sign up err. try again");
+    //   });
+  };
+
+  return (
+    <FormWrapper>
+      <Form form={form} layout="vertical" onFinish={handleSignup}>
+        {formFields?.map((field) => (
+          <Form.Item
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            rules={[
+              {
+                required: field.required,
+                message: `${field.label} is required`,
+              },
+            ]}
+          >
+            <Input placeholder={field.placeholder} />
+          </Form.Item>
+        ))}
+
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form>
     </FormWrapper>
   );

@@ -3,13 +3,15 @@ import { AuthContextType, AuthProviderProps, User } from './QAuth.types';
 import { SESSION_KEY } from '@quorini/core';
 import * as AuthService from '@quorini/core';
 import { Login, Signup, VerifyEmail } from '../../components/Auth';
+import { parseSchemaToFormFields } from '../../utils';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface QAuthProviderProps extends AuthProviderProps {
   LoginComponent?: React.ComponentType<{ onLoginSuccess: () => void }>;
-  SignupComponent?: React.ComponentType<{ onSignupSuccess: () => void }>;
+  SignupComponent?: React.ComponentType<{ onSignupSuccess: () => void,  }>;
   VerifyEmailComponent?: React.ComponentType<{ onVerifySuccess: () => void }>;
+  signUpInputType?: Record<string, string>;
 }
 
 const QAuthProvider: React.FC<QAuthProviderProps> = ({
@@ -17,6 +19,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   LoginComponent = Login,
   SignupComponent = Signup,
   VerifyEmailComponent = VerifyEmail,
+  signUpInputType,
 }) => {
   const [user, setUser] = useState<User>({} as User);
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
@@ -48,9 +51,9 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   };
 
-  const signup = async (username: string, password: string) => {
+  const signup = async (username: string, password: string, code: string, signupFormData: any) => {
     try {
-      await AuthService.signup(username, password);
+      await AuthService.signup(username, password, code, signupFormData);
       setUser({ username });
     } catch (error) {
       setAuthStep('signup');
@@ -89,9 +92,11 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const renderAuthComponent = () => {
     if (user && user.accessToken) return children;
 
+    const signupFormFields = parseSchemaToFormFields(signUpInputType!);
+
     switch (authStep) {
       case 'signup':
-        return <SignupComponent onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
+        return <SignupComponent formFields={signupFormFields} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
       case 'verifyEmail':
         return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
