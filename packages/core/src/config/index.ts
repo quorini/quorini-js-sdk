@@ -11,15 +11,15 @@ interface Config {
 const QClient = (() => {
     let config = {} as Config;
 
-    const privateProdUrls = {
-        apiUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/development",
-        authApiUrl: "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development",
-    };
-
     // const privateProdUrls = {
-    //     apiUrl: "https://api.quorini.io",
-    //     authApiUrl: "https://auth.quorini.io",
-    // }
+    //     apiUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/development",
+    //     authApiUrl: "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development",
+    // };
+
+    const privateProdUrls = {
+        apiUrl: "https://api.quorini.io",
+        authApiUrl: "https://auth.quorini.io",
+    }
 
     return {
         // Public configuration method for React projects to pass their environment variables
