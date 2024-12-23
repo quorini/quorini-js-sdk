@@ -50,6 +50,7 @@ const client = new ApolloClient({
 // signup function
 export const signup = async (username: string, password: string, code: string, signupFormData: any) => {
   let result:any = null;
+  console.log("signupFormData", signupFormData)
   try {
     const url = `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`
     // const usergroupName = JSON.parse(localStorage.getItem(SESSION_KEY)!)?.userGroup;
