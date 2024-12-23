@@ -49,18 +49,25 @@ const client = new ApolloClient({
 
 // signup function
 export const signup = async (username: string, password: string, code: string, signupFormData: any) => {
-  // Example usage of the introspection
-  
-
-  // try {
-  //   const authApiUrl = QClient.getPrivate('authApiUrl');
-  //   const response = await apiClient.post(`${authApiUrl}/sign-up`, {
-  //     authOption: { username, password },
-  //   });
-  //   return response.data;
-  // } catch (error) {
-  //   throw error;
-  // }
+  let result:any = null;
+  try {
+    const url = `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`
+    const usergroupName = JSON.parse(localStorage.getItem(SESSION_KEY)!)?.userGroup;
+    const response = await apiClient.post(url, {
+      authOption: { username, password, invitationCode: code },
+      query: `mutation create($input: create${usergroupName}Input!) { create${usergroupName}(input: $input) { id }}`,
+      variables: {
+          input: {
+            ...signupFormData,
+          },
+      },
+    });
+    if (response.status === 200) {
+      result = response.data;
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Verify Email
