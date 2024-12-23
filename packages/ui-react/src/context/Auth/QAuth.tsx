@@ -1,16 +1,18 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { AuthContextType, AuthProviderProps, User } from './QAuth.types';
-import * as AuthService from '../../services/authService';
+import { SESSION_KEY } from '@quorini/core';
+import * as AuthService from '@quorini/core';
 import { Login, Signup, VerifyEmail } from '../../components/Auth';
-
-const SESSION_KEY = 'session';
+import { parseSchemaToFormFields } from '../../utils';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface QAuthProviderProps extends AuthProviderProps {
   LoginComponent?: React.ComponentType<{ onLoginSuccess: () => void }>;
-  SignupComponent?: React.ComponentType<{ onSignupSuccess: () => void }>;
+  SignupComponent?: React.ComponentType<{ onSignupSuccess: () => void,  }>;
   VerifyEmailComponent?: React.ComponentType<{ onVerifySuccess: () => void }>;
+  signUpFormInputType?: Record<string, string>,
+  usergroup?: string,
 }
 
 const QAuthProvider: React.FC<QAuthProviderProps> = ({
@@ -18,6 +20,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   LoginComponent = Login,
   SignupComponent = Signup,
   VerifyEmailComponent = VerifyEmail,
+  signUpFormInputType,
+  usergroup,
 }) => {
   const [user, setUser] = useState<User>({} as User);
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
@@ -30,8 +34,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       setSession(session);
       setUser({
         username: session.userData?.username || session.userData?.email,
-        isActive: session?.isActive,
         accessToken: session?.accessToken,
+        refreshToken: session?.refreshToken,
       });
     }
   }, []);
@@ -39,18 +43,19 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const login = async (username: string, password: string) => {
     try {
       const sessionData = await AuthService.login(username, password);
+      console.log("sessionData", sessionData);
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
-      setUser({ username, isActive: sessionData?.isActive, accessToken: sessionData?.accessToken });
+      setUser({ username, accessToken: sessionData?.accessToken, refreshToken: session?.refreshToken });
     } catch (error) {
       setAuthStep('login');
       throw error;
     }
   };
 
-  const signup = async (username: string, password: string) => {
+  const signup = async (username: string, password: string, code: string, signupFormData: any, usergroup: string) => {
     try {
-      await AuthService.signup(username, password);
+      await AuthService.signup(username, password, code, signupFormData, usergroup);
       setUser({ username });
     } catch (error) {
       setAuthStep('signup');
@@ -59,6 +64,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const verifyEmail = async (verificationCode: string, username: string) => {
+    console.log("verifyEmail-verificationCode", verificationCode)
+    console.log("verifyEmail-username", username)
     try {
       await AuthService.verifyEmail(verificationCode, username);
       setUser({ username });
@@ -68,22 +75,36 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   };
 
+  const refreshAuthToken = async () => {
+    try {
+      const updatedSession = await AuthService.refreshAuthToken(user.refreshToken);
+      console.log("refreshAuthToken-updatedSession", updatedSession);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(updatedSession));
+      setUser({ ...user, accessToken: updatedSession.accessToken, refreshToken: updatedSession.refreshToken });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   const logout = () => {
     setUser({} as User);
     localStorage.removeItem(SESSION_KEY);
+    localStorage.clear();
     setAuthStep('login');
   };
 
   const renderAuthComponent = () => {
     if (user && user.accessToken) return children;
 
+    const signupFormFields = parseSchemaToFormFields(signUpFormInputType!);
+
     switch (authStep) {
       case 'signup':
-        return <SignupComponent onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
+        return <SignupComponent formFields={signupFormFields} usergroup={usergroup} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
       case 'verifyEmail':
         return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} />;
+        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpFormInputType} />;
     }
   };
 

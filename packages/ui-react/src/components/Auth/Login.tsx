@@ -1,44 +1,39 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks';
-import styled from 'styled-components';
-import { Alert, Button, Form, Input } from 'antd';
+import styled from "styled-components"
+import { Button, Input, Form, Alert, Flex, Checkbox } from "antd"
 import { LockOutlined, UserOutlined } from "@ant-design/icons"
+import { useAuth } from '../../hooks';
 
-interface SignupProps {
-  onSignupSuccess: () => void;
-  onLoginClick: () => void;
+interface LoginProps {
+  onLoginSuccess: () => void;
+  onSignupClick?: () => void;
+  selfSignup?: boolean;
 }
 
-const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
-  const { signup } = useAuth();
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick, selfSignup }) => {
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSignup = () => {
+  const handleLogin = () => {
     setIsLoading(true);
-    if (password !== confirmPassword) {
-      setError("Password not matched!");
-      setIsLoading(false);
-      return;
-    }
-    signup(username, password)
+    login(username, password)
       .then(() => {
         setIsLoading(false);
-        onSignupSuccess();
+        onLoginSuccess();
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log("signup err", err);
-        setError("sign up err. try again");
+        console.log("login-err", err);
+        setError("Invalid username or password");
       });
   };
 
   return (
     <FormWrapper>
-      <Form onFinish={handleSignup} autoComplete="off">
+      <Form onFinish={handleLogin} autoComplete="off">
         <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
           <Input
             prefix={<UserOutlined />}
@@ -46,7 +41,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
             title="Email address..."
             onChange={(e) => setUsername(e.target.value)}
             size="large"
-            style={{ width: "300px" }}
             autoFocus
           />
         </Form.Item>
@@ -57,10 +51,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
             {
               required: true,
               message: "Please input your password!",
-            },
-            {
-              pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
-              message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
             },
             {
               min: 8,
@@ -78,33 +68,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="confirmPassword"
-          rules={[
-            {
-              required: true,
-              message: "Please input your confirm password!",
-            },
-            {
-              pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
-              message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
-            },
-            {
-              min: 8,
-              message: "Should be at least 8 characters.",
-            },
-          ]}
-          style={{ maxWidth: "300px" }}
-        >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="Confirm Password..."
-            title="Confirm Password..."
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            size="large"
-          />
-        </Form.Item>
-
         {error && (
           <Form.Item>
             <Alert message={error} type="error" showIcon />
@@ -112,10 +75,19 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick }) => {
         )}
 
         <Form.Item>
+          <Flex justify="space-between" align="center">
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            <a href="">Forgot password</a>
+          </Flex>
+        </Form.Item>
+
+        <Form.Item>
           <Button block type="primary" htmlType="submit" loading={isLoading}>
-            Sign up
+            Log in
           </Button>
-          or <a href="#" onClick={onLoginClick}>Log in</a>
+          {selfSignup && (<>or <a href="#" onClick={onSignupClick}>Sign up now!</a></>)}
         </Form.Item>
       </Form>
     </FormWrapper>
@@ -129,4 +101,4 @@ const FormWrapper = styled.div`
   align-items: center;
 `;
 
-export default Signup;
+export default Login;

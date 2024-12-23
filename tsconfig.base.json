@@ -15,9 +15,9 @@
       "esModuleInterop": true,
       "lib": ["ESNext", "DOM"],
       "paths": {
-        "@ernst1202/qui-core": ["packages/quorini-core/src"],
-        "@ernst1202/qui-react": ["packages/quorini-react/src"],
-        "@ernst1202/qui-vue": ["packages/quorini-vue/src"]
+        "@quorini/core": ["packages/core/src"],
+        "@quorini/ui-react": ["packages/ui-react/src"],
+        "@quorini/ui-vue": ["packages/ui-vue/src"]
       }
     },
     "include": ["packages/*/src"],

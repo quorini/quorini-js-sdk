@@ -14,7 +14,7 @@ export default [
         tsconfig: './tsconfig.json'
       })
     ],
-    external: ['react', 'react-dom', '@ernst1202/qui-core']
+    external: ['react', 'react-dom', '@quorini/core']
   },
   {
     input: 'src/index.ts', // Path to your entry declaration file
