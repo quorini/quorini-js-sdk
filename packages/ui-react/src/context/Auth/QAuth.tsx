@@ -100,7 +100,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
       case 'verifyEmail':
         return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} />;
+        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpInputType} />;
     }
   };
 

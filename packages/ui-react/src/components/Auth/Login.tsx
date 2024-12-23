@@ -6,10 +6,11 @@ import { useAuth } from '../../hooks';
 
 interface LoginProps {
   onLoginSuccess: () => void;
-  onSignupClick: () => void;
+  onSignupClick?: () => void;
+  selfSignup?: boolean;
 }
 
-const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick, selfSignup }) => {
   const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -86,7 +87,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick }) => {
           <Button block type="primary" htmlType="submit" loading={isLoading}>
             Log in
           </Button>
-          or <a href="#" onClick={onSignupClick}>Sign up now!</a>
+          {selfSignup && (<>or <a href="#" onClick={onSignupClick}>Sign up now!</a></>)}
         </Form.Item>
       </Form>
     </FormWrapper>

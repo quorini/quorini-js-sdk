@@ -20,10 +20,30 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const defaultSignupForm = () => (
-    <>
-      <Form onFinish={handleSignup} autoComplete="off">
-        <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
+  const handleSignup = (values: Record<string, any>) => {
+    setIsLoading(true);
+    console.log('Submitted Values:', values);
+    if (password !== confirmPassword) {
+      setError("Password not matched!");
+      setIsLoading(false);
+      return;
+    }
+    signup(username, password, "", values)
+      .then(() => {
+        setIsLoading(false);
+        onSignupSuccess();
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log("signup err", err);
+        setError("sign up err. try again");
+      });
+  };
+
+  return (
+    <FormWrapper>
+      <Form form={form} layout="vertical" onFinish={handleSignup}>
+      <Form.Item name="username" rules={[{ required: true, message: "Please input your email address!" }]} style={{ maxWidth: "300px" }}>
           <Input
             prefix={<UserOutlined />}
             placeholder="Email address..."
@@ -88,46 +108,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
             size="large"
           />
         </Form.Item>
-
-        {error && (
-          <Form.Item>
-            <Alert message={error} type="error" showIcon />
-          </Form.Item>
-        )}
-
-        <Form.Item>
-          <Button block type="primary" htmlType="submit" loading={isLoading}>
-            Sign up
-          </Button>
-          or <a href="#" onClick={onLoginClick}>Log in</a>
-        </Form.Item>
-      </Form>
-    </>
-  )
-
-  const handleSignup = (values: Record<string, any>) => {
-    setIsLoading(true);
-    console.log('Submitted Values:', values);
-    // if (password !== confirmPassword) {
-    //   setError("Password not matched!");
-    //   setIsLoading(false);
-    //   return;
-    // }
-    // signup(username, password)
-    //   .then(() => {
-    //     setIsLoading(false);
-    //     onSignupSuccess();
-    //   })
-    //   .catch((err) => {
-    //     setIsLoading(false);
-    //     console.log("signup err", err);
-    //     setError("sign up err. try again");
-    //   });
-  };
-
-  return (
-    <FormWrapper>
-      <Form form={form} layout="vertical" onFinish={handleSignup}>
         {formFields?.map((field) => (
           <Form.Item
             key={field.name}
@@ -144,9 +124,18 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
           </Form.Item>
         ))}
 
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+        {error && (
+          <Form.Item>
+            <Alert message={error} type="error" showIcon />
+          </Form.Item>
+        )}
+
+        <Form.Item>
+          <Button block type="primary" htmlType="submit" loading={isLoading}>
+            Sign up
+          </Button>
+          or <a href="#" onClick={onLoginClick}>Log in</a>
+        </Form.Item>
       </Form>
     </FormWrapper>
   );
