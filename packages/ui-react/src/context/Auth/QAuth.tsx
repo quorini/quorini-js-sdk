@@ -11,10 +11,8 @@ interface QAuthProviderProps extends AuthProviderProps {
   LoginComponent?: React.ComponentType<{ onLoginSuccess: () => void }>;
   SignupComponent?: React.ComponentType<{ onSignupSuccess: () => void,  }>;
   VerifyEmailComponent?: React.ComponentType<{ onVerifySuccess: () => void }>;
-  signUpForm?: {
-    inputType: Record<string, string>,
-    usergroup: string,
-  };
+  signUpFormInputType?: Record<string, string>,
+  usergroup?: string,
 }
 
 const QAuthProvider: React.FC<QAuthProviderProps> = ({
@@ -22,7 +20,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   LoginComponent = Login,
   SignupComponent = Signup,
   VerifyEmailComponent = VerifyEmail,
-  signUpForm,
+  signUpFormInputType,
+  usergroup,
 }) => {
   const [user, setUser] = useState<User>({} as User);
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
@@ -97,16 +96,15 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const renderAuthComponent = () => {
     if (user && user.accessToken) return children;
 
-    const signupFormFields = parseSchemaToFormFields(signUpForm?.inputType!);
-    const usergroupName = signUpForm?.usergroup;
+    const signupFormFields = parseSchemaToFormFields(signUpFormInputType!);
 
     switch (authStep) {
       case 'signup':
-        return <SignupComponent formFields={signupFormFields} usergroup={usergroupName} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
+        return <SignupComponent formFields={signupFormFields} usergroup={usergroup} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
       case 'verifyEmail':
         return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpForm} />;
+        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpFormInputType} />;
     }
   };
 

@@ -5,8 +5,7 @@ interface Config {
     gqlPaths?: {
         queries: Record<string, string>,
         mutations: Record<string, string>,
-    },
-    usergroup?: string,
+    }
 }
   
 const QClient = (() => {
@@ -35,8 +34,7 @@ const QClient = (() => {
     
         // Internal method to retrieve private values based on mode
         getPrivate() {
-            let privateUrls = privateProdUrls;
-            return privateUrls;
+            return privateProdUrls;
         },
     };
 })();
