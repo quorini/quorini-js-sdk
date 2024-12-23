@@ -13,22 +13,20 @@ interface SignupProps {
 
 const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFields }) => {
   const { signup } = useAuth();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
 
   const handleSignup = (values: Record<string, any>) => {
     setIsLoading(true);
-    console.log('Submitted Values:', values);
+    const {username, password, confirmPassword, ...rest} = values;
+    console.log('Submitted Values:', rest);
     if (password !== confirmPassword) {
       setError("Password not matched!");
       setIsLoading(false);
       return;
     }
-    signup(username, password, "", values)
+    signup(username, password, "", rest)
       .then(() => {
         setIsLoading(false);
         onSignupSuccess();
@@ -48,7 +46,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
             prefix={<UserOutlined />}
             placeholder="Email address..."
             title="Email address..."
-            onChange={(e) => setUsername(e.target.value)}
             size="large"
             style={{ width: "300px" }}
             autoFocus
@@ -77,7 +74,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
             prefix={<LockOutlined />}
             placeholder="Password..."
             title="Password..."
-            onChange={(e) => setPassword(e.target.value)}
             size="large"
           />
         </Form.Item>
@@ -104,7 +100,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
             prefix={<LockOutlined />}
             placeholder="Confirm Password..."
             title="Confirm Password..."
-            onChange={(e) => setConfirmPassword(e.target.value)}
             size="large"
           />
         </Form.Item>
