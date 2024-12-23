@@ -52,7 +52,8 @@ export const signup = async (username: string, password: string, code: string, s
   let result:any = null;
   try {
     const url = `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`
-    const usergroupName = JSON.parse(localStorage.getItem(SESSION_KEY)!)?.userGroup;
+    // const usergroupName = JSON.parse(localStorage.getItem(SESSION_KEY)!)?.userGroup;
+    const usergroupName = "Customer";
     const response = await apiClient.post(url, {
       authOption: { username, password, invitationCode: code },
       query: `mutation create($input: create${usergroupName}Input!) { create${usergroupName}(input: $input) { id }}`,
