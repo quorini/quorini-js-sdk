@@ -62,6 +62,8 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const verifyEmail = async (verificationCode: string, username: string) => {
+    console.log("verifyEmail-verificationCode", verificationCode)
+    console.log("verifyEmail-username", username)
     try {
       await AuthService.verifyEmail(verificationCode, username);
       setUser({ username });
