@@ -11,7 +11,10 @@ interface QAuthProviderProps extends AuthProviderProps {
   LoginComponent?: React.ComponentType<{ onLoginSuccess: () => void }>;
   SignupComponent?: React.ComponentType<{ onSignupSuccess: () => void,  }>;
   VerifyEmailComponent?: React.ComponentType<{ onVerifySuccess: () => void }>;
-  signUpInputType?: Record<string, string>;
+  signUpForm?: {
+    inputType: Record<string, string>,
+    usergroup: string,
+  };
 }
 
 const QAuthProvider: React.FC<QAuthProviderProps> = ({
@@ -19,7 +22,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   LoginComponent = Login,
   SignupComponent = Signup,
   VerifyEmailComponent = VerifyEmail,
-  signUpInputType,
+  signUpForm,
 }) => {
   const [user, setUser] = useState<User>({} as User);
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
@@ -51,9 +54,9 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   };
 
-  const signup = async (username: string, password: string, code: string, signupFormData: any) => {
+  const signup = async (username: string, password: string, code: string, signupFormData: any, usergroup: string) => {
     try {
-      await AuthService.signup(username, password, code, signupFormData);
+      await AuthService.signup(username, password, code, signupFormData, usergroup);
       setUser({ username });
     } catch (error) {
       setAuthStep('signup');
@@ -94,15 +97,16 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const renderAuthComponent = () => {
     if (user && user.accessToken) return children;
 
-    const signupFormFields = parseSchemaToFormFields(signUpInputType!);
+    const signupFormFields = parseSchemaToFormFields(signUpForm?.inputType!);
+    const usergroupName = signUpForm?.usergroup;
 
     switch (authStep) {
       case 'signup':
-        return <SignupComponent formFields={signupFormFields} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
+        return <SignupComponent formFields={signupFormFields} usergroup={usergroupName} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
       case 'verifyEmail':
         return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpInputType} />;
+        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpForm} />;
     }
   };
 

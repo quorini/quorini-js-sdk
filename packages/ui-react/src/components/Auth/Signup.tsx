@@ -9,9 +9,10 @@ interface SignupProps {
   onSignupSuccess: () => void;
   onLoginClick: () => void;
   formFields?: MetaData[];
+  usergroup?: string;
 }
 
-const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFields }) => {
+const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFields, usergroup }) => {
   const { signup } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,7 +27,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
       setIsLoading(false);
       return;
     }
-    signup(username, password, "", rest)
+    signup(username, password, "", rest, usergroup || "")
       .then(() => {
         setIsLoading(false);
         onSignupSuccess();
