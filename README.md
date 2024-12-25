@@ -23,7 +23,7 @@ npm install @quorini/ui-react
   4.2. `env` (optional) can be **"production"** or **"development"**. By default, it’s **"production"**.\
   4.3. `qglPaths` (optional) and values are from step 3.
 
-    ```
+    ```tsx
     // index.tsx
     ...
     import { QClient } from "@quorini/core"
@@ -51,7 +51,7 @@ npm install @quorini/ui-react
 
   The `QAuth.Provider` guarantees that the `useAuth` hook is available throughout your application.
 
-  ```
+  ```tsx
   // index.tsx
   ...
   import { QAuth } from '@quorini/ui-react'
@@ -81,7 +81,7 @@ npm install @quorini/ui-react
   To use them, you need to render the `QAuth` after wrapping our application with `<QAuth.Provider>`
 
   Then, you can use `useAuth` on your App:
-  ```
+  ```tsx
   // app.tsx
   ...
   import { useAuth } from '@quorini/ui-react'
@@ -104,7 +104,7 @@ npm install @quorini/ui-react
   You can use the api endpoints directly.
   To use them, you need to import auth APIs from core package.
 
-  ```
+  ```tsx
   // auth.tsx
   ...
   import { login, signup, sendInvitation, refreshAuthToken } from '@quorini/core'
@@ -128,7 +128,7 @@ npm install @quorini/ui-react
 
 - **Add use QGql hook**
 
-  ```
+  ```tsx
   // index.tsx
   ...
   import { QGql } from '@quorini/ui-react'
@@ -148,7 +148,7 @@ npm install @quorini/ui-react
   )
   ```
 
-  ```
+  ```tsx
   // app.tsx
   ...
   import { useQGql } from '@quorini/core'
@@ -211,7 +211,7 @@ npm install @quorini/ui-react
   ```
 ## **Subscriptions module (coming soon)**
 
-```
+```tsx
 import { QStream } from "@quorini/core"
 
 const callbackFnEvent = (obj) => { user's code }
@@ -229,7 +229,7 @@ QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELEC
 ## **Storage (coming soon)**
 - **Public file (e.g. Image)**
 
-  ```
+  ```tsx
   import { Storage } from '@quorini/core'
 
   export function App() {
@@ -238,7 +238,7 @@ QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELEC
   ```
 - **Private or Protected file (e.g. Image)**
 
-  ```
+  ```tsx
   import { Storage } from '@quorini/core'
 
   export function App() {
@@ -252,7 +252,7 @@ QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELEC
   ```
 - **Error Handling (e.g. Image)**
 
-  ```
+  ```tsx
   import { Storage } from '@quorini/core'
 
   export function App() {
