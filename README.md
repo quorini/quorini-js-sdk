@@ -2,9 +2,10 @@
 <h3>This is JS SDK to integrate your Quorini project with web app.</h3>
 
 [![This is JS SDK to integrate your Quorini project with web app](https://github.com/user-attachments/assets/d446a409-e5e9-47d1-aeaf-169f24ec5eec)](https://quorini.com/)
-<h4 align="center">Define your data model visually, and deploy a fully-managed serverless backend in minutes.</h3>
-<h5 align="center">Visit <a href="quorini.com">quorini.com</a> for more details.</h3>
-<h5 align="center">Visit <a href="quorini.com">quorini.app</a> to start building new project.</h3>
+<h4 align="center">Define your data model visually, and deploy a fully-managed serverless backend in minutes.</h4>
+
+<h5>Visit <a href="quorini.com">quorini.com</a> for more details.</h5>
+<h5>Visit <a href="quorini.com">quorini.app</a> to start building new project.</h5>
 
 [![This is JS SDK to integrate your Quorini project with web app](https://github.com/user-attachments/assets/1c07c569-ba3d-46fe-adb7-c8133a339409)](https://quorini.app/)
 
