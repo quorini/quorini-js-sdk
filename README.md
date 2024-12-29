@@ -9,9 +9,9 @@
 
 [![This is JS SDK to integrate your Quorini project with web app](https://github.com/user-attachments/assets/1c07c569-ba3d-46fe-adb7-c8133a339409)](https://quorini.app/)
 
-</defs>
-</svg>
+[![This is JS SDK to integrate your Quorini project with web app](https://github.com/user-attachments/assets/1c07c569-ba3d-46fe-adb7-c8133a339409)](https://quorini.app/)
 
+---
 
 # Getting Started
 
