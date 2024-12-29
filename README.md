@@ -9,7 +9,7 @@
 
 [![Product of the day at ProductHunt](https://github.com/user-attachments/assets/1c07c569-ba3d-46fe-adb7-c8133a339409)](https://www.producthunt.com/products/quorini#quorini)
 
-[![Test project with Live API](https://github.com/user-attachments/assets/1c07c569-ba3d-46fe-adb7-c8133a339409)](https://quorini.app/)
+[![Test project with Live API](https://cdn.prod.website-files.com/669c3258841cd988fbcc2ed2/67281d081ffa915bbb7370d8_mutationcreate2-ezgif.com-video-to-gif-converter.gif)](https://quorini.app/)
 
 ---
 
