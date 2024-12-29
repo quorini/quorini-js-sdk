@@ -1,3 +1,6 @@
+# Quorini SDK
+[![This is JS SDK to integrate your Quorini project with web app](https://github.com/user-attachments/assets/d446a409-e5e9-47d1-aeaf-169f24ec5eec)](https://quorini.app/)
+
 # Getting Started with Quorini SDK
 
 [Quorini core package](https://www.npmjs.com/package/@quorini/core)\
