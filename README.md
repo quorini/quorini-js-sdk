@@ -1,4 +1,19 @@
-# Getting Started with Quorini SDK
+# Quorini SDK
+<h3>This is JS SDK to integrate your Quorini project with web app.</h3>
+
+[![Design and run serverless cloud API](https://github.com/user-attachments/assets/d446a409-e5e9-47d1-aeaf-169f24ec5eec)](https://quorini.com/)
+<h4 align="center">Define your data model visually, and deploy a fully-managed serverless backend in minutes.</h4>
+
+<h5>Visit <a href="quorini.com">quorini.com</a> for more details.</h5>
+<h5>Visit <a href="quorini.com">quorini.app</a> to start building new project.</h5>
+
+[![Product of the day at ProductHunt](https://github.com/user-attachments/assets/1c07c569-ba3d-46fe-adb7-c8133a339409)](https://www.producthunt.com/products/quorini#quorini)
+
+[![Test project with Live API](https://cdn.prod.website-files.com/669c3258841cd988fbcc2ed2/67281d081ffa915bbb7370d8_mutationcreate2-ezgif.com-video-to-gif-converter.gif)](https://quorini.app/)
+
+---
+
+# Getting Started
 
 [Quorini core package](https://www.npmjs.com/package/@quorini/core)\
 [Quorini ui-reack package](https://www.npmjs.com/package/@quorini/ui-react)
@@ -23,7 +38,7 @@ npm install @quorini/ui-react
   4.2. `env` (optional) can be **"production"** or **"development"**. By default, it’s **"production"**.\
   4.3. `qglPaths` (optional) and values are from step 3.
 
-    ```
+    ```tsx
     // index.tsx
     ...
     import { QClient } from "@quorini/core"
@@ -51,7 +66,7 @@ npm install @quorini/ui-react
 
   The `QAuth.Provider` guarantees that the `useAuth` hook is available throughout your application.
 
-  ```
+  ```tsx
   // index.tsx
   ...
   import { QAuth } from '@quorini/ui-react'
@@ -81,7 +96,7 @@ npm install @quorini/ui-react
   To use them, you need to render the `QAuth` after wrapping our application with `<QAuth.Provider>`
 
   Then, you can use `useAuth` on your App:
-  ```
+  ```tsx
   // app.tsx
   ...
   import { useAuth } from '@quorini/ui-react'
@@ -104,7 +119,7 @@ npm install @quorini/ui-react
   You can use the api endpoints directly.
   To use them, you need to import auth APIs from core package.
 
-  ```
+  ```tsx
   // auth.tsx
   ...
   import { login, signup, sendInvitation, refreshAuthToken } from '@quorini/core'
@@ -128,7 +143,7 @@ npm install @quorini/ui-react
 
 - **Add use QGql hook**
 
-  ```
+  ```tsx
   // index.tsx
   ...
   import { QGql } from '@quorini/ui-react'
@@ -148,7 +163,7 @@ npm install @quorini/ui-react
   )
   ```
 
-  ```
+  ```tsx
   // app.tsx
   ...
   import { useQGql } from '@quorini/core'
@@ -211,7 +226,7 @@ npm install @quorini/ui-react
   ```
 ## **Subscriptions module (coming soon)**
 
-```
+```tsx
 import { QStream } from "@quorini/core"
 
 const callbackFnEvent = (obj) => { user's code }
@@ -229,7 +244,7 @@ QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELEC
 ## **Storage (coming soon)**
 - **Public file (e.g. Image)**
 
-  ```
+  ```tsx
   import { Storage } from '@quorini/core'
 
   export function App() {
@@ -238,7 +253,7 @@ QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELEC
   ```
 - **Private or Protected file (e.g. Image)**
 
-  ```
+  ```tsx
   import { Storage } from '@quorini/core'
 
   export function App() {
@@ -252,7 +267,7 @@ QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELEC
   ```
 - **Error Handling (e.g. Image)**
 
-  ```
+  ```tsx
   import { Storage } from '@quorini/core'
 
   export function App() {
