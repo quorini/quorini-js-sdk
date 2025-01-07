@@ -16,5 +16,5 @@ export default {
       tsconfig: './tsconfig.json',
     }),
   ],
-  external: ['react', 'graphql', '@apollo/client'],
+  external: [],
 };
