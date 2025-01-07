@@ -5,7 +5,7 @@ interface Config {
     gqlPaths?: {
         queries: Record<string, string>,
         mutations: Record<string, string>,
-    }
+    },
 }
   
 const QClient = (() => {

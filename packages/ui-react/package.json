@@ -1,8 +1,12 @@
 {
   "name": "@quorini/ui-react",
   "version": "1.1.2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js"
+  },
   "scripts": {
     "build": "rollup -c"
   },
