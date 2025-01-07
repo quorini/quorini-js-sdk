@@ -18,7 +18,7 @@ export default [
         tsconfig: './tsconfig.json'
       })
     ],
-    external: ['react', 'react-dom', '@quorini/core']
+    external: ['react', 'react-dom', '@quorini/core', 'graphql', '@apollo/client', 'styled-components']
   },
   {
     input: './src/index.ts', // Path to your entry declaration file
