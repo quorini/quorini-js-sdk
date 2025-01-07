@@ -16,6 +16,11 @@ const QClient = (() => {
         authApiUrl: "https://auth.quorini.io",
     }
 
+    const privateDevUrls = {
+        apiUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/development",
+        authApiUrl: "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development",
+    }
+
     return {
         // Public configuration method for React projects to pass their environment variables
         configure(externalConfig: Config) {
@@ -29,7 +34,8 @@ const QClient = (() => {
     
         // Internal method to retrieve private values based on mode
         getPrivate() {
-            return privateProdUrls;
+            // return privateProdUrls;
+            return privateDevUrls;
         },
     };
 })();
