@@ -12,5 +12,5 @@ export default {
       tsconfig: './tsconfig.json'
     })
   ],
-  external: []
+  external: ['@apollo/client']
 };
