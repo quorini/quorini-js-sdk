@@ -1,8 +1,19 @@
 {
   "name": "@quorini/ui-react",
-  "version": "1.0.25",
-  "main": "dist/index.js",
+  "version": "1.1.18",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.cjs.js"
+    },
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
   "scripts": {
     "build": "rollup -c"
   },
@@ -12,7 +23,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
-    "@quorini/core": "^1.0.25",
+    "@quorini/core": "^1.1.18",
     "antd": "^5.21.6",
     "axios": "^1.7.7",
     "graphql": "^16.9.0",

@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { QClient } from '../config';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { SESSION_KEY } from './gqlService';
 
 // Create an Axios instance with default config
 const apiClient = axios.create({

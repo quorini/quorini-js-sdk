@@ -96,7 +96,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const renderAuthComponent = () => {
     if (user && user.accessToken) return children;
 
-    const signupFormFields = parseSchemaToFormFields(signUpFormInputType!);
+    const signupFormFields = signUpFormInputType ? parseSchemaToFormFields(signUpFormInputType) : undefined;
 
     switch (authStep) {
       case 'signup':

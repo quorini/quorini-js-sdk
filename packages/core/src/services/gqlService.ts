@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
 import { QClient } from '../config';
 
 export const SESSION_KEY = 'session';

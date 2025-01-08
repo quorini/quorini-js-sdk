@@ -5,7 +5,7 @@ interface Config {
     gqlPaths?: {
         queries: Record<string, string>,
         mutations: Record<string, string>,
-    }
+    },
 }
   
 const QClient = (() => {
@@ -14,7 +14,17 @@ const QClient = (() => {
     const privateProdUrls = {
         apiUrl: "https://api.quorini.io",
         authApiUrl: "https://auth.quorini.io",
-    }
+    };
+
+    /**
+     * privateDevUrls should be used in SDK developing or testing. 
+     */
+    /*
+    const privateDevUrls = {
+        apiUrl: "https://h5ti6dtzyl.execute-api.us-west-2.amazonaws.com/development",
+        authApiUrl: "https://hth72i9z93.execute-api.us-west-2.amazonaws.com/development",
+    };
+    */
 
     return {
         // Public configuration method for React projects to pass their environment variables
@@ -30,6 +40,7 @@ const QClient = (() => {
         // Internal method to retrieve private values based on mode
         getPrivate() {
             return privateProdUrls;
+            // return privateDevUrls; // When enable privateDevUrls, this code line should be enabled as well.
         },
     };
 })();
