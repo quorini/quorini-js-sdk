@@ -16,7 +16,7 @@
 # Getting Started
 
 [Quorini core package](https://www.npmjs.com/package/@quorini/core)\
-[Quorini ui-reack package](https://www.npmjs.com/package/@quorini/ui-react)
+[Quorini ui-react package](https://www.npmjs.com/package/@quorini/ui-react)
 
 ## Installation
 
