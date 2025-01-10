@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
 import { QClient } from '../config';
-
-export const SESSION_KEY = 'session';
+import { SESSION_KEY } from '.';
 
 export const query = async <VarsType extends OperationVariables, ResponseType>(
   baseQuery: string,

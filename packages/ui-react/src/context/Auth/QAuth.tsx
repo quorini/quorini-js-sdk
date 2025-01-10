@@ -85,7 +85,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const logout = () => {
     setUser({} as User);
     localStorage.removeItem(SESSION_KEY);
-    localStorage.clear();
     setAuthStep('login');
   };
 
