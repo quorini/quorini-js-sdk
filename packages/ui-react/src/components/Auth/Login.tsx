@@ -26,7 +26,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSignupClick, selfSignup
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log("login-err", err);
         setError("Invalid username or password");
       });
   };

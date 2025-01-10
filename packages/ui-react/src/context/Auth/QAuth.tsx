@@ -43,7 +43,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const login = async (username: string, password: string) => {
     try {
       const sessionData = await AuthService.login(username, password);
-      console.log("sessionData", sessionData);
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
       setSession(sessionData);
       setUser({ username, accessToken: sessionData?.accessToken, refreshToken: session?.refreshToken });
@@ -64,8 +63,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const verifyEmail = async (verificationCode: string, username: string) => {
-    console.log("verifyEmail-verificationCode", verificationCode)
-    console.log("verifyEmail-username", username)
     try {
       await AuthService.verifyEmail(verificationCode, username);
       setUser({ username });
@@ -78,7 +75,6 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   const refreshAuthToken = async () => {
     try {
       const updatedSession = await AuthService.refreshAuthToken(user.refreshToken);
-      console.log("refreshAuthToken-updatedSession", updatedSession);
       localStorage.setItem(SESSION_KEY, JSON.stringify(updatedSession));
       setUser({ ...user, accessToken: updatedSession.accessToken, refreshToken: updatedSession.refreshToken });
     } catch (error) {

@@ -21,7 +21,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
   const handleSignup = (values: Record<string, any>) => {
     setIsLoading(true);
     const {username, password, confirmPassword, ...rest} = values;
-    console.log('Submitted Values:', rest);
+
     if (password !== confirmPassword) {
       setError("Password not matched!");
       setIsLoading(false);
@@ -34,7 +34,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFiel
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log("signup err", err);
         setError("sign up err. try again");
       });
   };
