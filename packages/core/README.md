@@ -82,7 +82,6 @@ login(username, password)
 - login
 - logout
 - signup
-- signout
 - verifyEmail
 - refreshAuthToken
 - sendInvitation
