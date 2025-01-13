@@ -30,6 +30,8 @@ import { QAuth, QGql } from "@quorini/ui-react";
 
 ## Usage
 
+For more information regarding configuration, visit [github repository readme](https://github.com/quorini/quorini-js-sdk/)
+
 ### 1. Authenticator
 Before using the `@quorini/ui-react` package, ensure that your project is configured with the `@quorini/core` package.
 
