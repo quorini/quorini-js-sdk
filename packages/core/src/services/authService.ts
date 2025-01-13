@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { QClient } from '../config';
+import { SESSION_KEY } from '.';
 
 // Create an Axios instance with default config
 const apiClient = axios.create({
@@ -11,7 +12,7 @@ const apiClient = axios.create({
 
 // login function
 export const login = async (username: string, password: string) => {
-  let result:any = null;
+  let result:any = undefined;
   try {
     const authApiUrl = QClient.getPrivate().authApiUrl;
     const projectId = QClient.getConfig().projectId;
@@ -30,8 +31,7 @@ export const login = async (username: string, password: string) => {
 
 // signup function
 export const signup = async (username: string, password: string, code: string, signupFormData: any, usergroup: string) => {
-  let result:any = null;
-  console.log("signupFormData", signupFormData)
+  let result:any = undefined;
   try {
     const url = `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`
     const response = await apiClient.post(url, {
@@ -46,6 +46,7 @@ export const signup = async (username: string, password: string, code: string, s
     if (response.status === 200) {
       result = response.data;
     }
+    return result;
   } catch (error) {
     throw error;
   }
@@ -53,7 +54,7 @@ export const signup = async (username: string, password: string, code: string, s
 
 // Verify Email
 export const verifyEmail = async (code: string, username: string) => {
-  let result: any = null;
+  let result:any = undefined;
   try {
     const authApiUrl = QClient.getPrivate().authApiUrl;
     const projectId = QClient.getConfig().projectId;
@@ -68,7 +69,7 @@ export const verifyEmail = async (code: string, username: string) => {
 
 // refresh auth token
 export const refreshAuthToken = async (refreshToken: any) => {
-  let result: any = null;
+  let result:any = undefined;
   try {
     const authApiUrl = QClient.getPrivate().authApiUrl;
     const projectId = QClient.getConfig().projectId;
@@ -82,7 +83,7 @@ export const refreshAuthToken = async (refreshToken: any) => {
 }
 
 export const sendInvitation = async (email: string, userGroup: string, accessToken: any) => {
-  let result: any = null;
+  let result:any = undefined;
   try {
     const authApiUrl = QClient.getPrivate().authApiUrl;
     const projectId = QClient.getConfig().projectId;
@@ -106,7 +107,7 @@ export const sendInvitation = async (email: string, userGroup: string, accessTok
 }
 
 export const acceptInvitation = async (email: string, password: string, code: string) => {
-  let result: any = null;
+  let result:any = undefined;
   try {
     const authApiUrl = QClient.getPrivate().authApiUrl;
     const projectId = QClient.getConfig().projectId;
@@ -125,4 +126,8 @@ export const acceptInvitation = async (email: string, password: string, code: st
   } catch (error) {
     throw error;
   }
+}
+
+export const logout = () => {
+  localStorage.removeItem(SESSION_KEY);
 }

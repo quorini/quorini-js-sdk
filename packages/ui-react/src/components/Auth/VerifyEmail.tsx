@@ -23,7 +23,6 @@ const VerifyEmail: React.FC<VerifyEmailProps> = ({ onVerifySuccess }) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log("verify email err", err);
         setError("Verify Email Error. Try again later...");
       });
   };

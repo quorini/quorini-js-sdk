@@ -1,17 +1,23 @@
 # @quorini/core
 
 ## Description
-This package is used to configure a project with the backend published by quorini.app.\
+This package is used to configure a project with the backend published by [quorini.app](https://quorini.app/).\
 Quorini SDK enables developers to develop Quorini Backend-powered mobile and web apps.
 
 For more information, visit [github repository readme](https://github.com/quorini/quorini-js-sdk#quorini-sdk).
 
 ## Installing
-To install this package, simply type add or install @quorini/core using your favorite package manager:
+To install this package, simply type add or install `@quorini/core` using your favorite package manager:
 
-- npm install @quorini/core
-- yarn add @quorini/core
-- pnpm add @quorini/core
+```ts
+npm install @quorini/core
+
+or
+yarn add @quorini/core
+
+or
+pnpm add @quorini/core
+```
 
 ## Getting Started
 The Quorini SDK is modulized by clients and functions\
@@ -78,11 +84,68 @@ login(username, password)
   });
 ```
 
+## **Subscriptions module (coming soon)**
+
+```tsx
+import { QStream } from "@quorini/core"
+
+const callbackFnEvent = (obj) => { user's code }
+
+QStream.on("event", callbackFnEvent)
+
+QStrema.on("connect", callbackFnConnect)
+QStrema.on("close", callbackFnClose)
+
+...
+
+QStream.subscribe("onObjectCreate", "OPTIONAL_GQL_QUERY_FILTER", "OPTIONAL_SELECTORS")
+```
+
+## **Storage (coming soon)**
+- **Public file (e.g. Image)**
+
+  ```tsx
+  import { Storage } from '@quorini/core'
+
+  export function App() {
+    return <Storage.Image alt="sleepy-dog" path="public/dog.jpg" />
+  }
+  ```
+- **Private or Protected file (e.g. Image)**
+
+  ```tsx
+  import { Storage } from '@quorini/core'
+
+  export function App() {
+    return (
+      <Storage.Image
+        alt="protected dog"
+        path={({ identityId }) => `protected/${identityId}/dog.jpg`}
+      />
+    )
+  }
+  ```
+- **Error Handling (e.g. Image)**
+
+  ```tsx
+  import { Storage } from '@quorini/core'
+
+  export function App() {
+    return (
+      <Storage.Image
+        alt="fallback dog"
+        path="guest/dog-in-basket.jpg"
+        fallbackSrc="/fallback_dog.jpg"
+        onGetUrlError={(error) => console.error(error)}
+      />
+    )
+  }
+  ```
+
 ## Operations
 - login
 - logout
 - signup
-- signout
 - verifyEmail
 - refreshAuthToken
 - sendInvitation
