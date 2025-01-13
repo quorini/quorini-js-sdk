@@ -15,7 +15,12 @@
 
 # Getting Started
 
-For more detail visit [@quorini/core](https://www.npmjs.com/package/@quorini/core), [@quorini/ui-react](https://www.npmjs.com/package/@quorini/ui-react).
+For more detail about packages
+[npm package @quorini/core](https://www.npmjs.com/package/@quorini/core) – is used to configure a project with the backend published by quorini.app. Quorini SDK enables developers to develop Quorini Backend-powered mobile and web apps.
+[README.md](/packages/core/README.md)
+
+[npm package @quorini/ui-react](https://www.npmjs.com/package/@quorini/ui-react) – leverages a range of functions and React hooks designed to seamlessly integrate with your React application configured using the `@quorini/core` package in conjunction with the backend services provided by [quorini.app](quorini.app)
+[README.md](/packages/ui-react/README.md)
 
 ## Installation
 
