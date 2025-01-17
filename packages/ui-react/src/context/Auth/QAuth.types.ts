@@ -14,6 +14,9 @@ export interface AuthContextType {
   signup: (username: string, password: string, code: string, formData: any, usergroup: string) => Promise<void>;
   logout: () => void;
   verifyEmail: (verificationCode: string, username: string) => Promise<void>;
+  sendInvitation: (email: string, usergroup: string) => Promise<void>;
+  acceptInvitation: (formData: any) => Promise<void>;
+  refreshAuthToken: () => Promise<void>;
 }
 
 export interface User {

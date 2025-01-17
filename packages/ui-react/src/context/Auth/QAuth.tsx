@@ -82,6 +82,24 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   }
 
+  const sendInvitation = async (email: string, usergroup: string) => {
+    try {
+      const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
+      await AuthService.sendInvitation(email, usergroup, session.accessToken);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const acceptInvitation = async (formData: any) => {
+    const { email, newPassword, inviationCode } = formData;
+    try {
+      await AuthService.acceptInvitation(email, newPassword, inviationCode);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   const logout = () => {
     setUser({} as User);
     localStorage.removeItem(SESSION_KEY);
@@ -95,16 +113,43 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
 
     switch (authStep) {
       case 'signup':
-        return <SignupComponent formFields={signupFormFields} usergroup={usergroup} onSignupSuccess={() => setAuthStep('verifyEmail')} onLoginClick={() => setAuthStep('login')} />;
+        return (
+          <SignupComponent
+            formFields={signupFormFields}
+            usergroup={usergroup}
+            onSignupSuccess={() => setAuthStep('verifyEmail')}
+            onAcceptSuccess={() => setAuthStep('login')}
+            onLoginClick={() => setAuthStep('login')}
+          />
+        );
       case 'verifyEmail':
-        return <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />;
+        return (
+          <VerifyEmailComponent onVerifySuccess={() => setAuthStep('login')} />);
       default:
-        return <LoginComponent onLoginSuccess={() => setAuthStep('success')} onSignupClick={() => setAuthStep('signup')} selfSignup={!!signUpFormInputType} />;
+        return (
+          <LoginComponent
+            onLoginSuccess={() => setAuthStep('success')}
+            onSignupClick={() => setAuthStep('signup')}
+            selfSignup={!!signUpFormInputType}
+          />
+        );
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, login, signup, logout, verifyEmail }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        login,
+        signup,
+        logout,
+        verifyEmail,
+        sendInvitation,
+        acceptInvitation,
+        refreshAuthToken,
+      }}
+    >
       {renderAuthComponent()}
     </AuthContext.Provider>
   );

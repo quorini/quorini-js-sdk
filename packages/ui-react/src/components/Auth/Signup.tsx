@@ -8,15 +8,129 @@ import { MetaData } from '../../utils';
 interface SignupProps {
   onSignupSuccess: () => void;
   onLoginClick: () => void;
+  onAcceptSuccess: () => void;
   formFields?: MetaData[];
   usergroup?: string;
 }
 
-const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFields, usergroup }) => {
-  const { signup } = useAuth();
+const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAcceptSuccess, formFields, usergroup }) => {
+  const { signup, acceptInvitation } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
+
+  const pathname = window.location.pathname;
+  if (pathname.includes("set-password")) {
+    const params = new URLSearchParams(window.location.search);
+    const invitationEmail = params.get("email");
+    const inviationCode = params.get("code");
+
+    const handleAcceptInvitation = (values: Record<string, any>) => {
+      setIsLoading(true);
+      const { email, newPassword, inviationCode } = values;
+      if (email) {
+        setError("email address is not valid!");
+        setIsLoading(false);
+        return;
+      }
+      if (newPassword) {
+        setError("new password is not valid!");
+        setIsLoading(false);
+        return;
+      }
+      if (inviationCode) {
+        setError("invitation code is not valid!");
+        setIsLoading(false);
+        return;
+      }
+      acceptInvitation(values)
+        .then(() => {
+          setIsLoading(false);
+          onAcceptSuccess();
+        })
+        .catch(() => {
+          setIsLoading(false);
+          setError("sign up err. try again");
+        });
+    }
+
+    if (invitationEmail && inviationCode) {
+      return (
+        <FormWrapper>
+          <Form form={form} layout="vertical" onFinish={handleAcceptInvitation}>
+          <Form.Item name="email" style={{ maxWidth: "300px" }}>
+              <Input
+                prefix={<UserOutlined />}
+                size="large"
+                style={{ width: "300px" }}
+                value={invitationEmail}
+                disabled
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="invitationCode"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your invitation code! Copy/paste the code from invitation URL.",
+                },
+                {
+                  pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
+                  message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
+                },
+              ]}
+              style={{ maxWidth: "300px" }}
+            >
+              <Input
+                prefix={<GiftOutlined />}
+                placeholder="Inviation Code"
+                size="large"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="newPassword"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+                {
+                  pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
+                  message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
+                },
+                {
+                  min: 8,
+                  message: "Should be at least 8 characters.",
+                },
+              ]}
+              style={{ maxWidth: "300px" }}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                size="large"
+              />
+            </Form.Item>
+
+            {error && (
+              <Form.Item>
+                <Alert message={error} type="error" showIcon />
+              </Form.Item>
+            )}
+
+            <Form.Item>
+              <Button block type="primary" htmlType="submit" loading={isLoading}>
+                Sign up
+              </Button>
+              or <a href="#" onClick={onLoginClick}>Log in</a>
+            </Form.Item>
+          </Form>
+        </FormWrapper>
+      )
+    }
+  }
 
   const handleSignup = (values: Record<string, any>) => {
     setIsLoading(true);
