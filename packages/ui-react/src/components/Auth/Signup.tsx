@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../hooks';
 import styled from 'styled-components';
 import { Alert, Button, Form, Input } from 'antd';
-import { LockOutlined, UserOutlined } from "@ant-design/icons"
+import { LockOutlined, UserOutlined, GiftOutlined } from "@ant-design/icons"
 import { MetaData } from '../../utils';
 
 interface SignupProps {
