@@ -9,14 +9,14 @@ interface VerifyEmailProps {
 const { Title } = Typography;
 
 const VerifyEmail: React.FC<VerifyEmailProps> = ({ onVerifySuccess }) => {
-  const { user, verifyEmail } = useAuth();
+  const { session, verifyEmail } = useAuth();
   const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    verifyEmail(verificationCode, user.username)
+    verifyEmail(verificationCode, session.username)
       .then(() => {
         setIsLoading(false);
         onVerifySuccess();

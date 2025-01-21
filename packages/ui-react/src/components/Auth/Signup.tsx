@@ -21,6 +21,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
+    console.log("signup-pathname-check", pathname);
     const params = new URLSearchParams(window.location.search);
     const invitationEmail = params.get("email");
     const inviationCode = params.get("code");
