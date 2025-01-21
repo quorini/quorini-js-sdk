@@ -8,7 +8,6 @@ export interface AuthProviderProps {
 }
 
 export interface AuthContextType {
-  user: User;
   session: any | null;
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, password: string, code: string, formData: any, usergroup: string) => Promise<void>;
