@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Alert, Button, Form, Input } from 'antd';
 import { LockOutlined, UserOutlined, GiftOutlined } from "@ant-design/icons"
 import { MetaData } from '../../utils';
-import { useNavigate } from "react-router-dom";
 
 interface SignupProps {
   onSignupSuccess: () => void;
@@ -19,7 +18,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
@@ -48,7 +46,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
         .then(() => {
           setIsLoading(false);
           onAcceptSuccess();
-          navigate("/");
+          window.location.href = `${window.location.origin}/`;
         })
         .catch(() => {
           setIsLoading(false);
