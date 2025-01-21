@@ -26,11 +26,8 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
-      const { email, password, code } = values;
-      console.log("handleAcceptInvitation-email", invitationEmail)
-      console.log("handleAcceptInvitation-password", password)
-      console.log("handleAcceptInvitation-code", code)
-      if (!email || email.length === 0) {
+      const { password, code } = values;
+      if (!invitationEmail) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
@@ -45,7 +42,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
         setIsLoading(false);
         return;
       }
-      acceptInvitation(values)
+      acceptInvitation(invitationEmail, password, code)
         .then(() => {
           setIsLoading(false);
           onAcceptSuccess();
@@ -59,13 +56,13 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
     if (invitationEmail) {
       return (
         <FormWrapper>
-          <Form form={form} layout="vertical" onFinish={(values) => { console.log("onFinish-values", values), handleAcceptInvitation(values) }}>
+          <Form form={form} layout="vertical" onFinish={handleAcceptInvitation}>
             <Form.Item name="email" style={{ maxWidth: "300px" }}>
               <Input
                 prefix={<UserOutlined />}
                 size="large"
                 style={{ width: "300px" }}
-                value={invitationEmail}
+                defaultValue={invitationEmail}
                 disabled
               />
             </Form.Item>

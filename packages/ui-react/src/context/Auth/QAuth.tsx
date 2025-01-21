@@ -86,10 +86,9 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     }
   }
 
-  const acceptInvitation = async (formData: any) => {
-    const { email, newPassword, inviationCode } = formData;
+  const acceptInvitation = async (email: string, password: string, code: string) => {
     try {
-      await AuthService.acceptInvitation(email, newPassword, inviationCode);
+      await AuthService.acceptInvitation(email, password, code);
     } catch (error) {
       throw error;
     }
