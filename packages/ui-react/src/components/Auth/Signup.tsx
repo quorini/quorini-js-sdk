@@ -17,6 +17,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
   const { signup, acceptInvitation } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [form] = Form.useForm();
 
   const pathname = window.location.pathname;
@@ -29,21 +30,21 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
-      const { email, newPassword, inviationCode } = values;
-      console.log("handleAcceptInvitation-email", email)
-      console.log("handleAcceptInvitation-newPassword", newPassword)
-      console.log("handleAcceptInvitation-inviationCode", inviationCode)
-      if (!email || email.length === 0) {
+      const { email, password, code } = values;
+      console.log("handleAcceptInvitation-email", invitationEmail)
+      console.log("handleAcceptInvitation-password", password)
+      console.log("handleAcceptInvitation-code", code)
+      if (!invitationEmail) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
       }
-      if (!newPassword || newPassword.length === 0) {
+      if (!password || password.length === 0) {
         setError("password is not valid!");
         setIsLoading(false);
         return;
       }
-      if (!inviationCode || inviationCode.length === 0) {
+      if (!code || code.length === 0) {
         setError("invitation code is not valid!");
         setIsLoading(false);
         return;
@@ -62,8 +63,8 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
     if (invitationEmail && inviationCode) {
       return (
         <FormWrapper>
-          <Form form={form} layout="vertical" onFinish={handleAcceptInvitation}>
-          <Form.Item name="email" style={{ maxWidth: "300px" }}>
+          <Form form={form} layout="vertical" onFinish={(values) => { console.log("onFinish-values", values), handleAcceptInvitation(values) }}>
+            <Form.Item name="email" style={{ maxWidth: "300px" }}>
               <Input
                 prefix={<UserOutlined />}
                 size="large"
@@ -74,7 +75,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
             </Form.Item>
 
             <Form.Item
-              name="invitationCode"
+              name="code"
               rules={[
                 {
                   required: true,
@@ -95,7 +96,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
             </Form.Item>
 
             <Form.Item
-              name="newPassword"
+              name="password"
               rules={[
                 {
                   required: true,
