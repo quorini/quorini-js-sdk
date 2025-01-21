@@ -23,12 +23,13 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   signUpFormInputType,
   usergroup,
 }) => {
+  const pathname = window.location.pathname;
+  console.log("provider-pathname", pathname);
   const [user, setUser] = useState<User>({} as User);
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
   const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
-    const pathname = window.location.pathname;
     console.log("pathname", pathname);
     if (pathname.includes("set-password")) {
       setAuthStep('signup');
@@ -43,7 +44,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
         refreshToken: session?.refreshToken,
       });
     }
-  }, []);
+  }, [pathname]);
 
   const login = async (username: string, password: string) => {
     try {
