@@ -17,16 +17,12 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
   const { signup, acceptInvitation } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [form] = Form.useForm();
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
     const params = new URLSearchParams(window.location.search);
     const invitationEmail = params.get("email");
-    const inviationCode = params.get("code");
-    console.log("signup-invitationEmail", invitationEmail);
-    console.log("signup-inviationCode", inviationCode);
 
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
@@ -34,7 +30,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
       console.log("handleAcceptInvitation-email", invitationEmail)
       console.log("handleAcceptInvitation-password", password)
       console.log("handleAcceptInvitation-code", code)
-      if (!invitationEmail) {
+      if (!email || email.length === 0) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
@@ -60,7 +56,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
         });
     }
 
-    if (invitationEmail && inviationCode) {
+    if (invitationEmail) {
       return (
         <FormWrapper>
           <Form form={form} layout="vertical" onFinish={(values) => { console.log("onFinish-values", values), handleAcceptInvitation(values) }}>
@@ -69,7 +65,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
                 prefix={<UserOutlined />}
                 size="large"
                 style={{ width: "300px" }}
-                defaultValue={invitationEmail}
+                value={invitationEmail}
                 disabled
               />
             </Form.Item>
