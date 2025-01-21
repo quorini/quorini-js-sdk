@@ -30,17 +30,20 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
       const { email, newPassword, inviationCode } = values;
-      if (email) {
+      console.log("handleAcceptInvitation-email", email)
+      console.log("handleAcceptInvitation-newPassword", newPassword)
+      console.log("handleAcceptInvitation-inviationCode", inviationCode)
+      if (!email || email.length === 0) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
       }
-      if (newPassword) {
-        setError("new password is not valid!");
+      if (!newPassword || newPassword.length === 0) {
+        setError("password is not valid!");
         setIsLoading(false);
         return;
       }
-      if (inviationCode) {
+      if (!inviationCode || inviationCode.length === 0) {
         setError("invitation code is not valid!");
         setIsLoading(false);
         return;
@@ -124,7 +127,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
             <Form.Item>
               <Button block type="primary" htmlType="submit" loading={isLoading}>
-                Sign up
+                Accept Invitation
               </Button>
               or <a href="#" onClick={onLoginClick}>Log in</a>
             </Form.Item>
