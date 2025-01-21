@@ -21,10 +21,11 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
-    console.log("signup-pathname-check", pathname);
     const params = new URLSearchParams(window.location.search);
     const invitationEmail = params.get("email");
     const inviationCode = params.get("code");
+    console.log("signup-invitationEmail", invitationEmail);
+    console.log("signup-inviationCode", inviationCode);
 
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
@@ -64,7 +65,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
                 prefix={<UserOutlined />}
                 size="large"
                 style={{ width: "300px" }}
-                value={invitationEmail}
+                defaultValue={invitationEmail}
                 disabled
               />
             </Form.Item>

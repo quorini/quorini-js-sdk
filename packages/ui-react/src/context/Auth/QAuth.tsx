@@ -28,16 +28,14 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    console.log("pathname", pathname);
     if (pathname.includes("set-password")) {
-      console.log("set-password included");
       localStorage.removeItem(SESSION_KEY)
       setAuthStep('signup');
-    }
-    // Check if there is a token in localStorage to initialize user session
-    const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
-    if (session) {
-      setSession(session);
+    } else {
+      const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
+      if (session) {
+        setSession(session);
+      }
     }
   }, []);
 
@@ -45,7 +43,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
     try {
       const sessionData = await AuthService.login(username, password);
       localStorage.setItem(SESSION_KEY, JSON.stringify({...sessionData, username}));
-      setSession(sessionData);
+      setSession({...sessionData, username});
     } catch (error) {
       setAuthStep('login');
       throw error;
