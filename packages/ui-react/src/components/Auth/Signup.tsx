@@ -45,9 +45,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
       code += fragment;
     }
 
-    console.log("Code:", code);
-    console.log("Invitation Email:", invitationEmail);
-
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
       const { password } = values;
