@@ -43,8 +43,8 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
-      const { email, password, code } = values;
-      if (!email) {
+      const { password } = values;
+      if (!invitationEmail) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
@@ -59,7 +59,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
         setIsLoading(false);
         return;
       }
-      acceptInvitation(email, password, code)
+      acceptInvitation(invitationEmail, password, code)
         .then(() => {
           setIsLoading(false);
           onAcceptSuccess();
@@ -80,30 +80,21 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
                 prefix={<UserOutlined />}
                 size="large"
                 style={{ width: "300px" }}
-                value={invitationEmail}
+                defaultValue={invitationEmail}
                 disabled
               />
             </Form.Item>
 
             <Form.Item
               name="code"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your invitation code! Copy/paste the code from invitation URL.",
-                },
-                {
-                  pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
-                  message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
-                },
-              ]}
               style={{ maxWidth: "300px" }}
             >
               <Input
                 prefix={<GiftOutlined />}
                 placeholder="Inviation Code"
                 size="large"
-                value={code || ''}
+                defaultValue={code || ''}
+                disabled
               />
             </Form.Item>
 
