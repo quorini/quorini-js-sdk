@@ -21,8 +21,31 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
-    const params = new URLSearchParams(window.location.search);
-    const invitationEmail = params.get("email");
+    // const params = new URLSearchParams(window.location.search);
+    // const invitationEmail = params.get("email");
+
+    const url = new URL(window.location.href);
+
+    // Extract the query string
+    const queryString = url.search;
+
+    // Extract the fragment (part after #)
+    const fragment = url.hash;
+
+    // Parse the query string to get the parameters
+    const params = new URLSearchParams(queryString);
+
+    // Get the code and invitationEmail values
+    let code = params.get("code");
+    const invitationEmail = params.get("email"); // Assuming the parameter is named "email"
+
+    // If there's a fragment, append it to the code
+    if (fragment) {
+      code += fragment;
+    }
+
+    console.log("Code:", code); // Should log "2#jkrUj2q&"
+    console.log("Invitation Email:", invitationEmail);
 
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
