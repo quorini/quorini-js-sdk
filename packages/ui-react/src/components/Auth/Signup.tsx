@@ -21,6 +21,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
+    // Get the full URL
     const url = new URL(window.location.href);
 
     // Extract the query string
@@ -33,18 +34,24 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
     const params = new URLSearchParams(queryString);
 
     // Get the code and invitationEmail values
-    let code = params.get("code");
-    const invitationEmail = params.get("email"); // Assuming the parameter is named "email"
+    let code = params.get("code") || ""; // Fallback to empty string if code is null
+    const invitationEmail = params.get("email") || ""; // Fallback to empty string if email is null
+
+    // Decode the code value to handle URL-encoded characters
+    code = decodeURIComponent(code);
 
     // If there's a fragment, append it to the code
     if (fragment) {
       code += fragment;
     }
 
+    console.log("Code:", code);
+    console.log("Invitation Email:", invitationEmail);
+
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
       const { password } = values;
-      if (!invitationEmail) {
+      if (!invitationEmail || invitationEmail.length === 0) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
