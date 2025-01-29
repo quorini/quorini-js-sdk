@@ -21,9 +21,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
 
   const pathname = window.location.pathname;
   if (pathname.includes("set-password")) {
-    // const params = new URLSearchParams(window.location.search);
-    // const invitationEmail = params.get("email");
-
     const url = new URL(window.location.href);
 
     // Extract the query string
@@ -44,13 +41,10 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
       code += fragment;
     }
 
-    console.log("Code:", code); // Should log "2#jkrUj2q&"
-    console.log("Invitation Email:", invitationEmail);
-
     const handleAcceptInvitation = (values: Record<string, any>) => {
       setIsLoading(true);
-      const { password, code } = values;
-      if (!invitationEmail) {
+      const { email, password, code } = values;
+      if (!email) {
         setError("email address is not valid!");
         setIsLoading(false);
         return;
@@ -65,7 +59,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
         setIsLoading(false);
         return;
       }
-      acceptInvitation(invitationEmail, password, code)
+      acceptInvitation(email, password, code)
         .then(() => {
           setIsLoading(false);
           onAcceptSuccess();
@@ -86,7 +80,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
                 prefix={<UserOutlined />}
                 size="large"
                 style={{ width: "300px" }}
-                defaultValue={invitationEmail}
+                value={invitationEmail}
                 disabled
               />
             </Form.Item>
@@ -109,6 +103,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAccept
                 prefix={<GiftOutlined />}
                 placeholder="Inviation Code"
                 size="large"
+                value={code || ''}
               />
             </Form.Item>
 
