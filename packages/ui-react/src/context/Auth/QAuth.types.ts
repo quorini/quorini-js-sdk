@@ -8,12 +8,14 @@ export interface AuthProviderProps {
 }
 
 export interface AuthContextType {
-  user: User;
   session: any | null;
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, password: string, code: string, formData: any, usergroup: string) => Promise<void>;
   logout: () => void;
   verifyEmail: (verificationCode: string, username: string) => Promise<void>;
+  sendInvitation: (email: string, usergroup: string) => Promise<void>;
+  acceptInvitation: (email: string, password: string, code: string) => Promise<void>;
+  refreshAuthToken: () => Promise<void>;
 }
 
 export interface User {

@@ -2,21 +2,148 @@ import React, { useState } from 'react';
 import { useAuth } from '../../hooks';
 import styled from 'styled-components';
 import { Alert, Button, Form, Input } from 'antd';
-import { LockOutlined, UserOutlined } from "@ant-design/icons"
+import { LockOutlined, UserOutlined, GiftOutlined } from "@ant-design/icons"
 import { MetaData } from '../../utils';
 
 interface SignupProps {
   onSignupSuccess: () => void;
   onLoginClick: () => void;
+  onAcceptSuccess: () => void;
   formFields?: MetaData[];
   usergroup?: string;
 }
 
-const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, formFields, usergroup }) => {
-  const { signup } = useAuth();
+const Signup: React.FC<SignupProps> = ({ onSignupSuccess, onLoginClick, onAcceptSuccess, formFields, usergroup }) => {
+  const { signup, acceptInvitation } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
+
+  const pathname = window.location.pathname;
+  if (pathname.includes("set-password")) {
+    // Get the full URL
+    const url = new URL(window.location.href);
+
+    // Extract the query string
+    const queryString = url.search;
+
+    // Extract the fragment (part after #)
+    const fragment = url.hash;
+
+    // Parse the query string to get the parameters
+    const params = new URLSearchParams(queryString);
+
+    // Get the code and invitationEmail values
+    let code = params.get("code") || ""; // Fallback to empty string if code is null
+    const invitationEmail = params.get("email") || ""; // Fallback to empty string if email is null
+
+    // Decode the code value to handle URL-encoded characters
+    code = decodeURIComponent(code);
+
+    // If there's a fragment, append it to the code
+    if (fragment) {
+      code += fragment;
+    }
+
+    const handleAcceptInvitation = (values: Record<string, any>) => {
+      setIsLoading(true);
+      const { password } = values;
+      if (!invitationEmail || invitationEmail.length === 0) {
+        setError("email address is not valid!");
+        setIsLoading(false);
+        return;
+      }
+      if (!password || password.length === 0) {
+        setError("password is not valid!");
+        setIsLoading(false);
+        return;
+      }
+      if (!code || code.length === 0) {
+        setError("invitation code is not valid!");
+        setIsLoading(false);
+        return;
+      }
+      acceptInvitation(invitationEmail, password, code)
+        .then(() => {
+          setIsLoading(false);
+          onAcceptSuccess();
+          window.location.href = `${window.location.origin}/`;
+        })
+        .catch(() => {
+          setIsLoading(false);
+          setError("sign up err. try again");
+        });
+    }
+
+    if (invitationEmail) {
+      return (
+        <FormWrapper>
+          <Form form={form} layout="vertical" onFinish={handleAcceptInvitation}>
+            <Form.Item name="email" style={{ maxWidth: "300px" }}>
+              <Input
+                prefix={<UserOutlined />}
+                size="large"
+                style={{ width: "300px" }}
+                defaultValue={invitationEmail}
+                disabled
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="code"
+              style={{ maxWidth: "300px" }}
+            >
+              <Input
+                prefix={<GiftOutlined />}
+                placeholder="Inviation Code"
+                size="large"
+                defaultValue={code || ''}
+                disabled
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+                {
+                  pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W).+$/,
+                  message: "Should contain at least 1 uppercase, 1 lowercase, 1 digit and 1 special charecter.",
+                },
+                {
+                  min: 8,
+                  message: "Should be at least 8 characters.",
+                },
+              ]}
+              style={{ maxWidth: "300px" }}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                size="large"
+              />
+            </Form.Item>
+
+            {error && (
+              <Form.Item>
+                <Alert message={error} type="error" showIcon />
+              </Form.Item>
+            )}
+
+            <Form.Item>
+              <Button block type="primary" htmlType="submit" loading={isLoading}>
+                Accept Invitation
+              </Button>
+              or <a href="#" onClick={onLoginClick}>Log in</a>
+            </Form.Item>
+          </Form>
+        </FormWrapper>
+      )
+    }
+  }
 
   const handleSignup = (values: Record<string, any>) => {
     setIsLoading(true);

@@ -68,11 +68,11 @@ root.render(
 import { useAuth } from '@quorini/ui-react'
 
 function App() {
-  const { user, logout } = useAuth()
+  const { session, logout } = useAuth()
 
   return (
     <div>
-      <p>{user.username}</p>
+      <p>{session.username}</p>
       <button onClick={logout}>Log out</button>
     </div>
   )
@@ -143,7 +143,6 @@ function App() {
   ```
 
 #### Objects & Operations built-in useAuth hook
-- user
 - session
 - login
 - logout
