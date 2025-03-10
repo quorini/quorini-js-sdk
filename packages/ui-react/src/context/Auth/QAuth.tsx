@@ -13,6 +13,7 @@ interface QAuthProviderProps extends AuthProviderProps {
   VerifyEmailComponent?: React.ComponentType<{ onVerifySuccess: () => void }>;
   signUpFormInputType?: Record<string, string>,
   usergroup?: string,
+  noLayout?: boolean,
 }
 
 const QAuthProvider: React.FC<QAuthProviderProps> = ({
@@ -22,6 +23,7 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   VerifyEmailComponent = VerifyEmail,
   signUpFormInputType,
   usergroup,
+  noLayout = false,
 }) => {
   const [authStep, setAuthStep] = useState<'login' | 'signup' | 'verifyEmail' | 'success'>('login');
   const [session, setSession] = useState<any>(null);
@@ -100,7 +102,9 @@ const QAuthProvider: React.FC<QAuthProviderProps> = ({
   };
 
   const renderAuthComponent = () => {
-    if (session && session.accessToken) return children;
+    if (noLayout || (session && session.accessToken)) {
+      return children;
+    }
 
     const signupFormFields = signUpFormInputType ? parseSchemaToFormFields(signUpFormInputType) : undefined;
 
