@@ -182,3 +182,109 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
     throw error;
   }
 };
+
+// Public (no-auth) query function
+export const publicQuery = async <VarsType extends OperationVariables, ResponseType>(
+  baseQuery: string,
+  variables?: VarsType,
+  selectors?: string
+): Promise<ResponseType> => {
+  const client = new ApolloClient({
+    link: new HttpLink({
+      uri: `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/public/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`, // Adjust URI for public endpoint
+    }),
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
+  });
+
+  let gqlQueryString = baseQuery;
+
+  if (selectors) {
+    try {
+      const ast: DocumentNode = parse(baseQuery);
+      const allowedFields = parseSelectors(selectors);
+
+      const modifiedAst: DocumentNode = {
+        ...ast,
+        definitions: ast.definitions.map((definition) => {
+          if (definition.kind === Kind.OPERATION_DEFINITION) {
+            const opDef = definition as OperationDefinitionNode;
+            const mainSelection = opDef.selectionSet.selections[0] as FieldNode;
+
+            if (mainSelection && mainSelection.selectionSet) {
+              const filteredSelectionSet = filterSelectionSet(mainSelection.selectionSet, allowedFields);
+
+              return {
+                ...opDef,
+                selectionSet: {
+                  ...opDef.selectionSet,
+                  selections: [
+                    {
+                      ...mainSelection,
+                      selectionSet: filteredSelectionSet,
+                    },
+                  ],
+                },
+              };
+            }
+          }
+          return definition;
+        }),
+      };
+
+      gqlQueryString = print(modifiedAst);
+    } catch (error) {
+      console.error('Error parsing GraphQL query or selectors:', error);
+      throw new Error('Invalid GraphQL query or selectors format.');
+    }
+  }
+
+  const gqlQuery = gql(gqlQueryString);
+  const safeVariables = variables ?? ({} as VarsType);
+
+  try {
+    const response = await client.query<ResponseType, VarsType>({
+      query: gqlQuery,
+      variables: safeVariables,
+      fetchPolicy: 'no-cache',
+    });
+    return response.data as ResponseType;
+  } catch (error) {
+    console.error('Apollo Public Query Error:', error);
+    throw error;
+  }
+};
+
+// Public (no-auth) mutation function
+export const publicMutate = async <VarsType extends OperationVariables, ResponseType>(
+  baseMutation: string,
+  variables: VarsType
+): Promise<ResponseType> => {
+  const client = new ApolloClient({
+    link: new HttpLink({
+      uri: `${QClient.getPrivate().apiUrl}/${QClient.getConfig().projectId}/public/gql${QClient.getConfig().env === 'development' ? `?env=dev` : ''}`, // Adjust URI for public endpoint
+    }),
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
+  });
+
+  const mutation = gql(baseMutation);
+
+  try {
+    const response = await client.mutate<ResponseType, VarsType>({
+      mutation,
+      variables,
+    });
+
+    if (!response.data) {
+      throw new Error(`Public mutation response data for "${baseMutation}" is null or undefined.`);
+    }
+
+    return response.data as ResponseType;
+  } catch (error) {
+    console.error(`Error during public mutation "${baseMutation}":`, error);
+    throw error;
+  }
+};
