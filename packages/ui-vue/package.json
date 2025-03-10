@@ -1,6 +1,6 @@
 {
   "name": "@quorini/ui-vue",
-  "version": "1.1.41",
+  "version": "1.1.42",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -18,7 +18,7 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
-    "@quorini/core": "^1.1.41"
+    "@quorini/core": "^1.1.42"
   },
   "devDependencies": {
     "rollup": "^2.60.0",
