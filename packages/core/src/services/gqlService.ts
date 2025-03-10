@@ -8,6 +8,9 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
   selectors?: string
 ): Promise<ResponseType> => {
   const session = JSON.parse(localStorage.getItem(SESSION_KEY)!);
+  console.log("SDK-query-baseQuery", baseQuery);
+  console.log("SDK-query-variables", variables);
+  console.log("SDK-query-selectors", selectors);
 
   const client = new ApolloClient({
     link: new HttpLink({
@@ -33,6 +36,8 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
         `{ ${selectors.trim()} }` // Safely inject the selectors
       )
     : baseQuery;
+  
+  console.log("SDK-gqlQueryString", gqlQueryString);
 
   // Parse the updated query string
   const gqlQuery = gql(gqlQueryString);
