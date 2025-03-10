@@ -58,6 +58,7 @@ const filterSelectionSet = (selectionSet: SelectionSetNode, allowedFields: Recor
   } as SelectionSetNode;
 };
 
+// (auth) query function
 export const query = async <VarsType extends OperationVariables, ResponseType>(
   baseQuery: string,
   variables?: VarsType,
@@ -146,6 +147,7 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
   }
 };
 
+// (auth) mutate function
 export const mutate = async <VarsType extends OperationVariables, ResponseType>(
   baseMutation: string,
   variables: VarsType,
