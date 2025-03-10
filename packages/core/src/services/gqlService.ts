@@ -98,12 +98,8 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
 
   let gqlQueryString = baseQuery;
 
-  // Ensure selectors are valid
   if (selectors) {
     try {
-      // if (!/^[a-zA-Z0-9_ ]+$/.test(selectors)) {
-      //   throw new Error("Invalid selectors format."); 
-      // }
       // Parse the base query
       const ast: DocumentNode = parse(baseQuery);
 
@@ -113,10 +109,37 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
         definitions: ast.definitions.map((definition) => {
           if (definition.kind === Kind.OPERATION_DEFINITION) {
             const opDef = definition as OperationDefinitionNode;
-            return {
-              ...opDef,
-              selectionSet: parseSelectors(selectors), // Replace selectionSet with a new object
-            };
+
+            // Find the main field (e.g., "listListings")
+            const mainSelection = opDef.selectionSet.selections.find(
+              (sel) => sel.kind === Kind.FIELD && sel.name.value === 'listListings'
+            ) as FieldNode | undefined;
+
+            if (mainSelection && mainSelection.selectionSet) {
+              // Merge existing selectionSet with new one
+              const newSelectionSet = parseSelectors(selectors);
+
+              const mergedSelections = [
+                ...mainSelection.selectionSet.selections, // Existing selections
+                ...newSelectionSet.selections, // New fields from selectors
+              ];
+
+              return {
+                ...opDef,
+                selectionSet: {
+                  ...opDef.selectionSet,
+                  selections: [
+                    {
+                      ...mainSelection,
+                      selectionSet: {
+                        ...mainSelection.selectionSet,
+                        selections: mergedSelections, // Apply merged selection set
+                      },
+                    },
+                  ],
+                },
+              };
+            }
           }
           return definition;
         }),
