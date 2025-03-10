@@ -3,75 +3,59 @@ import { QClient } from '../config';
 import { SESSION_KEY } from '.';
 import { parse, print, FieldNode, SelectionSetNode, Kind, DocumentNode, OperationDefinitionNode, NameNode } from 'graphql';
 
-// Function to transform a selectors string into an AST SelectionSet
-const parseSelectors = (selectors: string): SelectionSetNode => {
-  const lines = selectors
+// Function to extract allowed fields from selector input
+const parseSelectors = (selectors: string): Record<string, any> => {
+  const result: Record<string, any> = {};
+  const stack: Record<string, any>[] = [result];
+
+  selectors
     .trim()
     .split('\n')
     .map((line) => line.trim())
-    .filter((line) => line.length > 0);
-
-  const parseFields = (lines: string[]): FieldNode[] => {
-    const fields: FieldNode[] = [];
-    const fieldStack: { field: FieldNode; selections: FieldNode[] }[] = [];
-
-    lines.forEach((line) => {
-      const match = line.match(/^([\w_]+)\s*:\s*\{$/); // Match "fieldName : {"
-      const isClosingBracket = line === '}';
-
-      if (match) {
-        // Start of a nested object
-        const newField: FieldNode = {
-          kind: Kind.FIELD,
-          name: { kind: Kind.NAME, value: match[1] } as NameNode,
-          selectionSet: { kind: Kind.SELECTION_SET, selections: [] },
-        };
-
-        if (fieldStack.length > 0) {
-          const parent = fieldStack[fieldStack.length - 1];
-          parent.selections = [...parent.selections, newField]; // Create new array to avoid readonly error
-        } else {
-          fields.push(newField);
-        }
-
-        fieldStack.push({ field: newField, selections: [] });
-      } else if (isClosingBracket) {
-        // End of nested object
-        const completedField = fieldStack.pop();
-        if (completedField) {
-          // Create a new updated field object instead of modifying selectionSet directly
-          const updatedField: FieldNode = {
-            ...completedField.field,
-            selectionSet: {
-              ...completedField.field.selectionSet!,
-              selections: completedField.selections,
-            },
-          };
-
-          if (fieldStack.length > 0) {
-            const parent = fieldStack[fieldStack.length - 1];
-            parent.selections = [...parent.selections, updatedField]; // Ensure new array assignment
-          } else {
-            fields.push(updatedField);
-          }
-        }
+    .filter((line) => line.length > 0)
+    .forEach((line) => {
+      if (line.endsWith('{')) {
+        const fieldName = line.replace('{', '').trim();
+        stack[stack.length - 1][fieldName] = {};
+        stack.push(stack[stack.length - 1][fieldName]);
+      } else if (line === '}') {
+        stack.pop();
       } else {
-        // Regular field
-        const fieldNode: FieldNode = { kind: Kind.FIELD, name: { kind: Kind.NAME, value: line } as NameNode };
-
-        if (fieldStack.length > 0) {
-          const parent = fieldStack[fieldStack.length - 1];
-          parent.selections = [...parent.selections, fieldNode]; // Create new array
-        } else {
-          fields.push(fieldNode);
-        }
+        stack[stack.length - 1][line] = true;
       }
     });
 
-    return fields;
-  };
+  return result;
+};
 
-  return { kind: Kind.SELECTION_SET, selections: parseFields(lines) };
+// Function to filter or modify a SelectionSetNode based on allowed fields
+const filterSelectionSet = (selectionSet: SelectionSetNode, allowedFields: Record<string, any>): SelectionSetNode => {
+  const filteredSelections = selectionSet.selections
+    .map((selection) => {
+      if (selection.kind === Kind.FIELD) {
+        const field = selection as FieldNode;
+        const fieldName = field.name.value;
+
+        if (allowedFields[fieldName]) {
+          // If the field is allowed and has nested fields in allowedFields
+          if (field.selectionSet && typeof allowedFields[fieldName] === 'object' && Object.keys(allowedFields[fieldName]).length > 0) {
+            return {
+              ...field,
+              selectionSet: filterSelectionSet(field.selectionSet, allowedFields[fieldName]),
+            };
+          }
+          // If the field is allowed and no nested fields are specified, keep it as is (leaf field)
+          return field;
+        }
+      }
+      return null; // Remove unallowed fields
+    })
+    .filter((selection) => selection !== null);
+
+  return {
+    kind: Kind.SELECTION_SET,
+    selections: filteredSelections,
+  } as SelectionSetNode;
 };
 
 export const query = async <VarsType extends OperationVariables, ResponseType>(
@@ -100,29 +84,25 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
 
   if (selectors) {
     try {
-      // Parse the base query
+      // Parse the base query into an AST
       const ast: DocumentNode = parse(baseQuery);
 
-      // Modify the selection set dynamically by creating a new AST
+      // Parse the selectors into a nested object
+      const allowedFields = parseSelectors(selectors);
+
+      // Modify the AST based on the allowed fields
       const modifiedAst: DocumentNode = {
         ...ast,
         definitions: ast.definitions.map((definition) => {
           if (definition.kind === Kind.OPERATION_DEFINITION) {
             const opDef = definition as OperationDefinitionNode;
 
-            // Find the main field (e.g., "listListings")
-            const mainSelection = opDef.selectionSet.selections.find(
-              (sel) => sel.kind === Kind.FIELD && sel.name.value === 'listListings'
-            ) as FieldNode | undefined;
+            // Assume the first selection is the main query field (e.g., "listListings")
+            const mainSelection = opDef.selectionSet.selections[0] as FieldNode;
 
             if (mainSelection && mainSelection.selectionSet) {
-              // Merge existing selectionSet with new one
-              const newSelectionSet = parseSelectors(selectors);
-
-              const mergedSelections = [
-                ...mainSelection.selectionSet.selections, // Existing selections
-                ...newSelectionSet.selections, // New fields from selectors
-              ];
+              // Filter the selection set based on the allowed fields
+              const filteredSelectionSet = filterSelectionSet(mainSelection.selectionSet, allowedFields);
 
               return {
                 ...opDef,
@@ -131,10 +111,7 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
                   selections: [
                     {
                       ...mainSelection,
-                      selectionSet: {
-                        ...mainSelection.selectionSet,
-                        selections: mergedSelections, // Apply merged selection set
-                      },
+                      selectionSet: filteredSelectionSet,
                     },
                   ],
                 },
@@ -145,21 +122,13 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
         }),
       };
 
-      // Convert back to a string query
+      // Convert the modified AST back to a string
       gqlQueryString = print(modifiedAst);
     } catch (error) {
-      console.error('Error parsing GraphQL query:', error);
-      throw new Error('Invalid GraphQL query format.');
+      console.error('Error parsing GraphQL query or selectors:', error);
+      throw new Error('Invalid GraphQL query or selectors format.');
     }
   }
-
-  // // Replace the selection set with selectors if provided
-  // const gqlQueryString = selectors
-  //   ? baseQuery.replace(
-  //       /{([^{}]*)}/, // Match the inner selection set content
-  //       `{ ${selectors.trim()} }` // Safely inject the selectors
-  //     )
-  //   : baseQuery;
   
   console.log("SDK-gqlQueryString", gqlQueryString);
 
