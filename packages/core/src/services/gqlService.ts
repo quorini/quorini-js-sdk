@@ -169,8 +169,6 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
   const mutation = gql(baseMutation);
 
   try {
-    console.log("SDK-mutation", mutation)
-    console.log("SDK-variables", variables)
     const response = await client.mutate<ResponseType, VarsType>({
       mutation,
       variables,
