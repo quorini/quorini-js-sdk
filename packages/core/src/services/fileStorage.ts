@@ -16,7 +16,7 @@ const getPresignedUrl = async (accessToken: string) => {
     const apiUrl = QClient.getPrivate().apiUrl;
     const projectId = QClient.getConfig().projectId;
     const projectEnvironment = QClient.getConfig().env;
-    const url = `${apiUrl}/${projectId}/gql${projectEnvironment === 'development' ? `?env=dev` : ''}`;
+    const url = `${apiUrl}/${projectId}/file-upload-url${projectEnvironment === 'development' ? `?env=dev` : ''}`;
 
     const response = await apiClient.get(url, {
       headers: {
@@ -26,6 +26,7 @@ const getPresignedUrl = async (accessToken: string) => {
 
     if (response.status === 200) {
       result = response.data;
+      console.log("getPresignedUrl-result", result)
     }
     return result;
   } catch (error) {
@@ -39,7 +40,8 @@ export const fileUpload = async (file: File, accessToken: string) => {
     const presignedUrl = await getPresignedUrl(accessToken);
     const response = await apiClient.put(presignedUrl.uploadUrl, file);
     if (response.status === 200) {
-      console.log("File uploaded successfully");
+      console.log("fileUpload-res", response);
+      console.log("fileUpload-presignedUrl", presignedUrl);
       result = presignedUrl.fileId;
     }
     return result;
