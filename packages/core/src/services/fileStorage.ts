@@ -26,7 +26,6 @@ const getPresignedUrl = async (accessToken: string) => {
 
     if (response.status === 200) {
       result = response.data;
-      console.log("getPresignedUrl-result", result)
     }
     return result;
   } catch (error) {
@@ -40,8 +39,6 @@ export const fileUpload = async (file: File, accessToken: string) => {
     const presignedUrl = await getPresignedUrl(accessToken);
     const response = await apiClient.put(presignedUrl.uploadUrl, file);
     if (response.status === 200) {
-      console.log("fileUpload-res", response);
-      console.log("fileUpload-presignedUrl", presignedUrl);
       result = presignedUrl.fileId;
     }
     return result;
