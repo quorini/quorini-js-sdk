@@ -140,7 +140,13 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
       variables: safeVariables,
       fetchPolicy: "no-cache",
     });
-    return response.data as ResponseType;
+
+    if (!response.data) {
+      throw new Error(`Query response data for "${baseQuery}" is null or undefined.`);
+    }
+    
+    // Unwrap the first level of the response.data
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error('Apollo Query Error:', error);
     throw error;
@@ -178,6 +184,7 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
+    // Unwrap the first level of the response.data
     return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error(`Error during mutation "${baseMutation}":`, error);
@@ -251,7 +258,13 @@ export const publicQuery = async <VarsType extends OperationVariables, ResponseT
       variables: safeVariables,
       fetchPolicy: 'no-cache',
     });
-    return response.data as ResponseType;
+
+    if (!response.data) {
+      throw new Error(`Query response data for "${baseQuery}" is null or undefined.`);
+    }
+
+    // Unwrap the first level of the response.data
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error('Apollo Public Query Error:', error);
     throw error;
@@ -284,6 +297,7 @@ export const publicMutate = async <VarsType extends OperationVariables, Response
       throw new Error(`Public mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
+    // Unwrap the first level of the response.data
     return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error(`Error during public mutation "${baseMutation}":`, error);
