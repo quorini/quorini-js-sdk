@@ -178,8 +178,7 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
-    // @ts-ignore
-    return response.data.create as ResponseType;
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error(`Error during mutation "${baseMutation}":`, error);
     throw error;
@@ -285,7 +284,7 @@ export const publicMutate = async <VarsType extends OperationVariables, Response
       throw new Error(`Public mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
-    return response.data as ResponseType;
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error(`Error during public mutation "${baseMutation}":`, error);
     throw error;
