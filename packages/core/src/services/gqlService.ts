@@ -174,14 +174,9 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       variables,
     });
 
-    console.log("mutate-response", response)
-
     if (!response.data) {
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
     }
-
-    console.log("Object.values(response.data)[0]", Object.values(response.data)[0])
-    console.log("Object.values(response.data)[0] as ResponseType", Object.values(response.data)[0] as ResponseType)
 
     return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
