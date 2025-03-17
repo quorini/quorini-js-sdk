@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
 import { QClient } from '../config';
 import { SESSION_KEY } from '.';
-import { parse, print, FieldNode, SelectionSetNode, Kind, DocumentNode, OperationDefinitionNode, NameNode } from 'graphql';
+import { parse, print, FieldNode, SelectionSetNode, Kind, DocumentNode, OperationDefinitionNode } from 'graphql';
 
 // Function to extract allowed fields from selector input
 const parseSelectors = (selectors: string): Record<string, any> => {
