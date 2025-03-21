@@ -39,7 +39,10 @@ export const fileUpload = async (file: File, accessToken: string) => {
     const presignedUrl = await getPresignedUrl(accessToken);
     const response = await apiClient.put(presignedUrl.uploadUrl, file);
     if (response.status === 200) {
-      result = presignedUrl.fileId;
+      result = {
+        id: presignedUrl.fileId,
+        url: presignedUrl.uploadUrl
+      };
     }
     return result;
   } catch (error) {
