@@ -168,7 +168,7 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       },
     }),
     cache: new InMemoryCache({
-      addTypename: true,
+      addTypename: false,
     }),
   });
 
