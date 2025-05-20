@@ -181,8 +181,6 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       fetchPolicy: 'no-cache',
     });
 
-    console.log('Full mutation response:', response); // Log full response
-
     if (!response.data) {
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
     }
