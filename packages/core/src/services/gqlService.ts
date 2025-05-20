@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink, gql, OperationVariables } from '@apollo/client';
 import { QClient } from '../config';
 import { SESSION_KEY } from '.';
-import { parse, print, FieldNode, SelectionSetNode, Kind, DocumentNode, OperationDefinitionNode, NameNode } from 'graphql';
+import { parse, print, FieldNode, SelectionSetNode, Kind, DocumentNode, OperationDefinitionNode } from 'graphql';
 
 // Function to extract allowed fields from selector input
 const parseSelectors = (selectors: string): Record<string, any> => {
@@ -140,7 +140,13 @@ export const query = async <VarsType extends OperationVariables, ResponseType>(
       variables: safeVariables,
       fetchPolicy: "no-cache",
     });
-    return response.data as ResponseType;
+
+    if (!response.data) {
+      throw new Error(`Query response data for "${baseQuery}" is null or undefined.`);
+    }
+    
+    // Unwrap the first level of the response.data
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error('Apollo Query Error:', error);
     throw error;
@@ -172,13 +178,15 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
     const response = await client.mutate<ResponseType, VarsType>({
       mutation,
       variables,
+      fetchPolicy: 'no-cache',
     });
 
     if (!response.data) {
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
-    return response.data as ResponseType;
+    // Unwrap the first level of the response.data
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error(`Error during mutation "${baseMutation}":`, error);
     throw error;
@@ -251,7 +259,13 @@ export const publicQuery = async <VarsType extends OperationVariables, ResponseT
       variables: safeVariables,
       fetchPolicy: 'no-cache',
     });
-    return response.data as ResponseType;
+
+    if (!response.data) {
+      throw new Error(`Query response data for "${baseQuery}" is null or undefined.`);
+    }
+
+    // Unwrap the first level of the response.data
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error('Apollo Public Query Error:', error);
     throw error;
@@ -284,7 +298,8 @@ export const publicMutate = async <VarsType extends OperationVariables, Response
       throw new Error(`Public mutation response data for "${baseMutation}" is null or undefined.`);
     }
 
-    return response.data as ResponseType;
+    // Unwrap the first level of the response.data
+    return Object.values(response.data)[0] as ResponseType;
   } catch (error) {
     console.error(`Error during public mutation "${baseMutation}":`, error);
     throw error;
