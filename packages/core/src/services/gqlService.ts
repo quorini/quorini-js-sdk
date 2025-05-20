@@ -168,7 +168,7 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
       },
     }),
     cache: new InMemoryCache({
-      addTypename: false,
+      addTypename: true,
     }),
   });
 
@@ -178,9 +178,10 @@ export const mutate = async <VarsType extends OperationVariables, ResponseType>(
     const response = await client.mutate<ResponseType, VarsType>({
       mutation,
       variables,
+      fetchPolicy: 'no-cache',
     });
 
-    console.log("mutation-response", response)
+    console.log('Full mutation response:', response); // Log full response
 
     if (!response.data) {
       throw new Error(`Mutation response data for "${baseMutation}" is null or undefined.`);
