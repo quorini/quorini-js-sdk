@@ -16,7 +16,7 @@ const getPresignedUrl = async (accessToken: string) => {
     const apiUrl = QClient.getPrivate().apiUrl;
     const projectId = QClient.getConfig().projectId;
     const projectEnvironment = QClient.getConfig().env;
-    const url = `${apiUrl}/${projectId}/file-upload-url-type/${projectEnvironment === 'development' ? `?env=dev` : ''}`;
+    const url = `${apiUrl}/${projectId}/file-upload-url/${projectEnvironment === 'development' ? `?env=dev` : ''}`;
     console.log("getPresignedUrl", url)
 
     const response = await apiClient.get(url, {
