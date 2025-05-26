@@ -16,7 +16,7 @@ const getPresignedUrl = async (accessToken: string) => {
     const apiUrl = QClient.getPrivate().apiUrl;
     const projectId = QClient.getConfig().projectId;
     const projectEnvironment = QClient.getConfig().env;
-    const url = `${apiUrl}/${projectId}/file-upload-url${projectEnvironment === 'development' ? `?env=dev` : ''}`;
+    const url = `${apiUrl}/${projectId}/file-upload-url/${projectEnvironment === 'development' ? `?env=dev` : ''}`;
 
     const response = await apiClient.get(url, {
       headers: {
@@ -37,7 +37,14 @@ export const fileUpload = async (file: File, accessToken: string) => {
   let result: any = undefined;
   try {
     const presignedUrl = await getPresignedUrl(accessToken);
-    const response = await apiClient.put(presignedUrl.uploadUrl, file);
+
+    // Set the Content-Type based on the file's MIME type
+    const headers = {
+      'Content-Type': file.type || 'application/octet-stream', // Fallback to generic type if file.type is empty
+    };
+
+    const response = await apiClient.put(presignedUrl.uploadUrl, file, { headers });
+
     if (response.status === 200) {
       result = {
         id: presignedUrl.fileId,
